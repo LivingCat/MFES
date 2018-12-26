@@ -1,6 +1,13 @@
 class Client
 instance variables
-  name:seq of (char);
-  inv len name > 0;
+  name: seq of (char) := [];
+
+operations
+	public Client: seq of (char) ==> Client
+		Client(n) == (name := n; return self)
+		pre len n > 0;
+		
+	public getName: () ==> seq of (char)
+		getName() == return name;
 
 end Client

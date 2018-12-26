@@ -1,5 +1,12 @@
 class PurchaseFromClient is subclass of Purchase
 instance variables
-  client:Client;
+  client: Client;
+
+operations
+	public PurchaseFromClient: Client * map Product to nat1 * Date ==> PurchaseFromClient
+	PurchaseFromClient(c, ps,d) == (
+		client := c;
+		Purchase(ps,d);
+	);
 
 end PurchaseFromClient

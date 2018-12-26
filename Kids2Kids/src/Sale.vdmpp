@@ -1,8 +1,27 @@
 class Sale
 instance variables
-  client:Client;
-  product:map Product to nat1;
-  date:Date;
-  grandTotal:real;
+  client: Client;
+  products: map Product to nat1;
+  date: Date;
+  grandTotal: real;
+  
+operations
+	private calculateGrandTotal: () ==> real
+		calculateGrandTotal() == (
+			dcl sum:real := 0;
+			for all p in set dom products do sum := sum + p.getBuyPrice() * products(p);
+			return sum;
+		);
+		
+	protected Sale: Client * map Product to nat1 * Date ==> Sale
+		Sale(c,ps,d) == (
+			client := c;
+			products := ps;
+			date := d;
+			grandTotal := calculateGrandTotal();
+			return self;
+		)
+		pre card dom ps <> 0
+		post grandTotal > 0;
 
 end Sale

@@ -1,5 +1,12 @@
 class PurchaseFromSupplier is subclass of Purchase
 instance variables
   supplier:Supplier;
+  
+operations
+	public PurchaseFromSupplier: Supplier * map Product to nat1 * Date ==> PurchaseFromSupplier
+	PurchaseFromSupplier(s, ps,d) == (
+		supplier := s;
+		Purchase(ps,d);
+	);
 
 end PurchaseFromSupplier

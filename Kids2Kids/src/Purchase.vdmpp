@@ -1,25 +1,25 @@
 class Purchase
 instance variables
-  products: map Product to nat1;
-  date:Date;
-  grandTotal:real;
+  protected products: map Product to nat1;
+  protected date: Date;
+  protected grandTotal: real;
   
-operations 
-	private calculateGrandTotal: () ==> real
+operations
+	protected calculateGrandTotal: () ==> real
 		calculateGrandTotal() == (
 			dcl sum:real := 0;
 			for all p in set dom products do sum := sum + p.getBuyPrice() * products(p);
 			return sum;
 		);
 		
-	public Purchase: map Product to nat1 * Date ==> Purchase
-		Purchase(ps,d) == (
-			products := ps;
-			date := d;
-			grandTotal := calculateGrandTotal();
-			return self;
-		)
-		pre card dom ps <> 0
-		post grandTotal > 0;
+		protected Purchase: map Product to nat1 * Date ==> Purchase
+			Purchase(ps,d) == (
+				products := ps;
+				date := d;
+				grandTotal := calculateGrandTotal();
+				return self;
+			)
+			pre card dom ps <> 0
+			post grandTotal > 0;
 
 end Purchase

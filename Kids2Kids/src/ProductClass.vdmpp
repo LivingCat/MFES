@@ -1,5 +1,12 @@
 class ProductClass
 instance variables
-  name:seq of (char);
+  name : seq of (char);
+  inv len name > 0;
+  
+operations
+	public ProductClass: seq of (char) ==> ProductClass
+		ProductClass(n) == (name := n; return self;);
 
 end ProductClass
+
+

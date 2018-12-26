@@ -1,8 +1,25 @@
 class Product
 instance variables
-  productClass:ProductClass;
-  name:seq of (char);
-  buyPrice:real;
-  sellPrice:real;
+  productClass: ProductClass;
+  name: seq of (char);
+  buyPrice: real;
+  sellPrice: real;
+  inv buyPrice >= 0 and sellPrice >= 0 and len name > 0; 
+  
+operations
+	public Product: ProductClass * seq of (char) * real * real ==> Product
+		Product(pClass,n,bPrice,sPrice) == (
+			productClass := pClass;
+			name := n;
+			buyPrice := bPrice;
+			sellPrice := sPrice;
+			return self;
+		);
+	
+	public getBuyPrice: () ==> real 
+		getBuyPrice() == return buyPrice;
+		
+	public getSellPrice: () ==> real 
+		getSellPrice() == return sellPrice;
 
 end Product

@@ -1,0 +1,8 @@
+class Date
+instance variables
+  day:nat1;
+  month:nat1;
+  year:nat1;
+  inv day < 32 and month < 13
+
+end Date

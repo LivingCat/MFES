@@ -1,0 +1,8 @@
+class Product
+instance variables
+  productClass:ProductClass;
+  name:seq of (char);
+  buyPrice:real;
+  sellPrice:real;
+
+end Product

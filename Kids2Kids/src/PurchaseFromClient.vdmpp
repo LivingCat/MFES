@@ -1,0 +1,5 @@
+class PurchaseFromClient is subclass of Purchase
+instance variables
+  client:Client;
+
+end PurchaseFromClient

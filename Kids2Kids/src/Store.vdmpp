@@ -1,0 +1,27 @@
+class Store
+instance variables
+  sale:set of (Sale);
+  purchase:set of (Purchase);
+  product:map Product to nat;
+  name:seq of (char);
+  country:seq of (char);
+
+operations
+  public  buy : (map Product to nat1) * Client ==> PurchaseFromClient
+  buy(products, client) ==
+    is not yet specified;
+
+  public  sell : (map Product to nat1) * Client ==> Sale
+  sell(products, client) ==
+    is not yet specified;
+
+  public  buy : (map Product to nat1) * Supplier ==> PurchaseFromSupplier
+  buy(products, supplier) ==
+    is not yet specified;
+
+  public  generateReport : ()  ==> seq of (char)
+  generateReport() ==
+    is not yet specified;
+
+
+end Store

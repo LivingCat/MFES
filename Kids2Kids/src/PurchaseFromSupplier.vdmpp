@@ -1,0 +1,5 @@
+class PurchaseFromSupplier is subclass of Purchase
+instance variables
+  supplier:Supplier;
+
+end PurchaseFromSupplier

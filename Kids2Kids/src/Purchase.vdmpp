@@ -1,0 +1,7 @@
+class Purchase
+instance variables
+  product: map Product to nat1;
+  date:Date;
+  grandTotal:real;
+
+end Purchase

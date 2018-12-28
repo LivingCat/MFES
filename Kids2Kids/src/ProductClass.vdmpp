@@ -6,6 +6,9 @@ instance variables
 operations
 	public ProductClass: seq of (char) ==> ProductClass
 		ProductClass(n) == (name := n; return self;);
+		
+	pure public getName: () ==> seq of (char)
+		getName() == return name;
 
 end ProductClass
 

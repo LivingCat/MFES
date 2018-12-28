@@ -5,8 +5,21 @@ instance variables
   product:map Product to nat;
   name:seq of (char);
   country:seq of (char);
+  classes: set of ProductClass;
 
 operations
+
+	public Store: seq of (char) * seq of (char) ==> Store
+	Store(n,c) == (
+	 name := n;
+	 country := c; 
+	 product := {|->};
+	 sale := {};
+	 purchase := {};
+	 classes := {};
+	 return self;
+	 );
+	 
   public  buy : (map Product to nat1) * Client ==> PurchaseFromClient
   buy(products, client) == 
   	is not yet specified
@@ -27,7 +40,7 @@ operations
     is not yet specified
     pre card dom products > 0 and  --temos de estar a vender algo
     	forall p in set dom products & p in set dom product and --produtos que tentamos vender existem na loja
-    	forall p2 in set dom products & products(p2) <= product(p2)
+    	forall p2 in set dom products & products(p2) <= product(p2) -- vendemos stock que temos
     post forall p in set dom products & product(p) = product~(p) - products(p);
     
  
@@ -35,7 +48,7 @@ operations
   public addProduct : Product ==> ()
   addProduct(p) ==
   	is not yet specified
-  	pre p not in set dom product --produto novo
+  	pre not exists p2 in set dom product & p.getName() = p2.getName()  --produto novo
   	post card dom product = card dom product~ + 1; --temos um produto novo
   	
   public removeProduct : seq of (char) ==> ()
@@ -43,6 +56,18 @@ operations
   	is not yet specified
   	pre exists1 p in set dom product & pName = p.getName()    --produto tem de existir na loja
   	post card dom product = card dom product~ - 1; --removemos um produto
+  	
+  public addProductClass: ProductClass ==> ()
+  addProductClass(pc) ==
+  	is not yet specified
+  	pre not exists pc2 in set classes & pc2.getName() = pc.getName() --classe nova 
+  	post card classes = card classes~ + 1;
+  	
+ 	public removeProductClass: seq of (char) ==> ()
+ 	removeProductClass(pcName) ==
+ 		is not yet specified
+ 		pre exists pc2 in set classes & pc2.getName() = pcName
+ 		post card classes = card classes~ - 1;
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==

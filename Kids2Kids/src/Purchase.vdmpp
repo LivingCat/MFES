@@ -12,13 +12,13 @@ operations
 			return sum;
 		);
 		
-		protected Purchase: map Product to nat1 * Date ==> Purchase
-			Purchase(ps,d) == (
-				products := ps;
-				date := d;
-				grandTotal := calculateGrandTotal();
-				return self;
-			)
+	protected Purchase: map Product to nat1 * Date ==> Purchase
+		Purchase(ps,d) == (
+			products := ps;
+			date := d;
+			grandTotal := calculateGrandTotal();
+			return self;
+		)
 			pre card dom ps > 0
 			post grandTotal > 0;
 

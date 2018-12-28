@@ -8,16 +8,41 @@ instance variables
 
 operations
   public  buy : (map Product to nat1) * Client ==> PurchaseFromClient
-  buy(products, client) ==
-    is not yet specified;
-
-  public  sell : (map Product to nat1) * Client ==> Sale
-  sell(products, client) ==
-    is not yet specified;
+  buy(products, client) == 
+  	is not yet specified
+		pre card dom products > 0 and 
+			forall p in set dom products & p in set dom product
+  	post forall p in set dom products & product(p) = product~(p) + products(p);
+  	
 
   public  buy : (map Product to nat1) * Supplier ==> PurchaseFromSupplier
   buy(products, supplier) ==
-    is not yet specified;
+  	is not yet specified
+  	pre card dom products > 0 and 
+			forall p in set dom products & p in set dom product
+  	post forall p in set dom products & product(p) = product~(p) + products(p);
+  	
+  public  sell : (map Product to nat1) * Client ==> Sale
+  sell(products, client) ==
+    is not yet specified
+    pre card dom products > 0 and  --temos de estar a vender algo
+    	forall p in set dom products & p in set dom product and --produtos que tentamos vender existem na loja
+    	forall p2 in set dom products & products(p2) <= product(p2)
+    post forall p in set dom products & product(p) = product~(p) - products(p);
+    
+ 
+  -- add product to the store  
+  public addProduct : Product ==> ()
+  addProduct(p) ==
+  	is not yet specified
+  	pre p not in set dom product --produto novo
+  	post card dom product = card dom product~ + 1; --temos um produto novo
+  	
+  public removeProduct : seq of (char) ==> ()
+  removeProduct(pName) == 
+  	is not yet specified
+  	pre exists1 p in set dom product & pName = p.getName()    --produto tem de existir na loja
+  	post card dom product = card dom product~ - 1; --removemos um produto
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==

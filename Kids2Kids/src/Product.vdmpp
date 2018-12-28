@@ -21,5 +21,8 @@ operations
 		
 	public getSellPrice: () ==> real 
 		getSellPrice() == return sellPrice;
+		
+	pure public getName: () ==> seq of (char)
+		getName() == return name;
 
 end Product

@@ -19,7 +19,7 @@ operations
 				grandTotal := calculateGrandTotal();
 				return self;
 			)
-			pre card dom ps <> 0
+			pre card dom ps > 0
 			post grandTotal > 0;
 
 end Purchase

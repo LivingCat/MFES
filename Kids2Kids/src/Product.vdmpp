@@ -24,5 +24,8 @@ operations
 		
 	pure public getName: () ==> seq of (char)
 		getName() == return name;
+		
+	pure public getClass: () ==> ProductClass
+		getClass() == return productClass;
 
 end Product

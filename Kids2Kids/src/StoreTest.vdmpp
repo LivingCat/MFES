@@ -21,18 +21,21 @@ operations
 	testRemoveProductClass() == (
 		dcl pc1 : ProductClass := new ProductClass("food");
 		dcl pc2 : ProductClass := new ProductClass("toy");
-		dcl p1 : Product := new Product(pc1,"maca",0.1,0.2);
-		dcl p2 : Product := new Product(pc2,"bola",5,6);
+		dcl p1 : Product := new Product(pc1,"apple",0.1,0.2);
+		dcl p2 : Product := new Product(pc2,"ball",5,6);
+		dcl p3 : Product := new Product(pc1,"banana",0.2,0.3);
 		
 		store.addProduct(p1,3);
 		store.addProduct(p2,2);
+		store.addProduct(p3,3);
+		
+		assertTrue(store.getNumberOfProductClasses() = 2);
+		assertTrue(store.getNumberOfProducts() = 3);
 		 
 		store.removeProductClass("food");
 		assertTrue(store.getNumberOfProductClasses() = 1);
-		assertTrue(store.getNumberOfProductsTypes() = 1);
+		assertTrue(store.getNumberOfProducts() = 1);
 		--assertTrue({pc},store.
-		
-		
 	);
 
 	public static main: () ==> ()

@@ -1,0 +1,27 @@
+class StoreTest
+instance variables
+	store : Store := new Store("Kids2Kids","PT",1000);
+operations
+	private assertTrue: bool ==> ()
+	assertTrue(cond) == return
+		pre cond;
+		
+	private testAddProductClass: () ==> ()
+	testAddProductClass() == (
+		dcl pc1 : ProductClass := new ProductClass("food");
+		dcl pc2 : ProductClass := new ProductClass("toy");
+		
+		store.addProductClass(pc1);
+		store.addProductClass(pc2);
+		assertTrue(store.getNumberOfProductClasses() = 2);
+	);
+
+	public static main: () ==> ()
+	main() == (
+		dcl testSuite : StoreTest := new StoreTest();
+		
+		testSuite.testAddProductClass();
+	);
+	
+	
+end StoreTest

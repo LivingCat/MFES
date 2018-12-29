@@ -154,6 +154,15 @@ operations
  		pre exists pc2 in set classes & pc2.getName() = pcName
  		post card classes = card classes~ - 1 and
  			not exists p in set dom product & p.getClass().getName() = pcName;
+ 			
+ 	public getNumberOfPurchases : () ==> nat
+ 	getNumberOfPurchases() == return card purchase;
+ 	
+ 	public getNumberOfSales : () ==> nat
+ 	getNumberOfSales() == return card sale;
+ 	
+ 	public getNumberOfProductClasses : () ==> nat
+ 	getNumberOfProductClasses() == return card classes;
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==

@@ -163,6 +163,9 @@ operations
  	
  	public getNumberOfProductClasses : () ==> nat
  	getNumberOfProductClasses() == return card classes;
+ 	
+ 	public getNumberOfProductsTypes : () ==> nat
+ 	getNumberOfProductsTypes() == return card dom product;
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==

@@ -1,0 +1,175 @@
+class Store
+instance variables
+  sale:set of (Sale);
+  purchase:set of (Purchase);
+  product:map Product to nat;
+  name:seq of (char);
+  country:seq of (char);
+  classes: set of ProductClass;
+  cash : real;
+  inv cash >= 0;
+
+operations
+
+	public Store: seq of (char) * seq of (char) ==> Store
+	Store(n,c) == (
+	 name := n;
+	 country := c; 
+	 product := {|->};
+	 sale := {};
+	 purchase := {};
+	 classes := {};
+	 cash := 0;
+	 return self;
+	);
+	 
+	public Store: seq of (char) * seq of (char) * real ==> Store
+	Store(n,c,csh) == (
+	 name := n;
+	 country := c; 
+	 product := {|->};
+	 sale := {};
+	 purchase := {};
+	 classes := {};
+	 cash := csh;
+	 return self;
+	);
+	
+	pure private calculateGrandTotalPurchase: map Product to nat1 ==> real
+		calculateGrandTotalPurchase(productsList) == (
+			dcl sum:real := 0;
+			for all p in set dom productsList do sum := sum + p.getBuyPrice() * productsList(p);
+			return sum;
+		);
+		
+	pure private calculateGrandTotalSale: map Product to nat1 ==> real
+		calculateGrandTotalSale(productsList) == (
+			dcl sum:real := 0;
+			for all p in set dom productsList do sum := sum + p.getSellPrice() * productsList(p);
+			return sum;
+		);
+	 
+  public  buy : (map Product to nat1) * Client * Date ==> PurchaseFromClient
+  buy(products, client, date) == (
+  	dcl newPurchase : Purchase := new PurchaseFromClient(client,products,date);
+  	dcl productsCpy : map Product to nat1 := products;
+  	purchase := purchase union {newPurchase};
+  	
+  	for all p in set dom products do productsCpy(p) := product(p) + products(p);
+  	product := product ++ productsCpy;
+  	
+  	cash := cash - calculateGrandTotalPurchase(products); 
+  	
+  	return newPurchase;
+  )
+		pre card dom products > 0 and 
+			forall p in set dom products & p in set dom product and
+			calculateGrandTotalPurchase(products) <= cash
+  	post forall p in set dom products & product(p) = product~(p) + products(p) and
+  		cash = cash~ - calculateGrandTotalPurchase(products);
+  	
+
+  public  buy : (map Product to nat1) * Supplier * Date ==> PurchaseFromSupplier
+  buy(products, supplier, date) == (
+  	dcl newPurchase : Purchase := new PurchaseFromSupplier(supplier,products,date);
+  	dcl productsCpy : map Product to nat1 := products;
+  	purchase := purchase union {newPurchase};
+  	
+  	for all p in set dom products do productsCpy(p) := product(p) + products(p);
+  	product := product ++ productsCpy;
+  	
+  	cash := cash - calculateGrandTotalPurchase(products);  
+  	
+  	return newPurchase;
+  )
+  	pre card dom products > 0 and 
+			forall p in set dom products & p in set dom product and
+			calculateGrandTotalPurchase(products) <= cash
+  	post forall p in set dom products & product(p) = product~(p) + products(p)  and
+  		cash = cash~ - calculateGrandTotalPurchase(products);
+  	
+  public  sell : (map Product to nat1) * Client * Date ==> Sale
+  sell(products, client, date) == (
+  	dcl newSale : Sale := new Sale(client,products,date);
+  	dcl productsCpy : map Product to nat := products;
+  	sale := sale union {newSale};
+  	
+  	for all p in set dom products do productsCpy(p) := product(p) - products(p);
+  	product := product ++ productsCpy;
+  	
+  	cash := cash + calculateGrandTotalSale(products);  
+  	
+  	return newSale;
+  )
+    pre card dom products > 0 and  --temos de estar a vender algo
+    	forall p in set dom products & p in set dom product and --produtos que tentamos vender existem na loja
+    	forall p2 in set dom products & products(p2) <= product(p2) -- vendemos stock que temos
+    post forall p in set dom products & product(p) = product~(p) - products(p) and
+    	cash = cash~ + calculateGrandTotalSale(products);
+    
+ 
+  -- add product to the store  
+  public addProduct : Product * nat ==> ()
+  addProduct(p,q) == (
+  	dcl newProduct : map Product to nat := {p |-> q};
+  	product := product ++ newProduct;
+  )
+  	pre not exists p2 in set dom product & p.getName() = p2.getName() and  --produto novo
+  		p.getClass() in set classes --existe a classe do produto
+  	post card dom product = card dom product~ + 1; --temos um produto novo
+  	
+  public removeProduct : seq of (char) ==> ()
+  removeProduct(pName) == (
+  	dcl productCopy : Product;
+  	for all p in set dom product do if(p.getName() = pName) then productCopy := p;
+  	product := {productCopy} <-: product;
+  )
+  	pre exists1 p in set dom product & pName = p.getName()    --produto tem de existir na loja
+  	post card dom product = card dom product~ - 1; --removemos um produto
+  	
+  public addStock : Product * nat1 ==> ()
+  addStock(p,q) == (
+  	dcl q1 : nat := product(p) + q;
+  	dcl newProduct : map Product to nat := {p |-> q1};
+  	product := product ++ newProduct;
+  )
+  	pre p in set dom product;
+  	
+  public addProductClass: ProductClass ==> ()
+  addProductClass(pc) == classes := classes union {pc}
+  	pre not exists pc2 in set classes & pc2.getName() = pc.getName() --classe nova 
+  	post card classes = card classes~ + 1;
+  	
+ 	public removeProductClass: seq of (char) ==> ()
+ 	removeProductClass(pcName) == (
+  	dcl pcCpy : ProductClass;
+  	dcl productsToDelete : set of Product := {};
+  	
+  	for all pc in set classes do if(pc.getName() = pcName) then pcCpy := pc;
+  	classes := classes \ {pcCpy};
+  	
+  	for all p in set dom product do if(p.getClass().getName() = pcName) then productsToDelete := productsToDelete union {p};
+  	product := productsToDelete <-: product;
+  )
+ 		pre exists pc2 in set classes & (pc2.getName() = pcName)
+ 		post card classes = card classes~ - 1 
+ 		and not exists p in set dom product & p.getClass().getName() = pcName;
+ 			
+ 	public getNumberOfPurchases : () ==> nat
+ 	getNumberOfPurchases() == return card purchase;
+ 	
+ 	public getNumberOfSales : () ==> nat
+ 	getNumberOfSales() == return card sale;
+ 	
+ 	public getNumberOfProductClasses : () ==> nat
+ 	getNumberOfProductClasses() == return card classes;
+ 	
+ 	public getNumberOfProducts : () ==> nat
+ 	getNumberOfProducts() == return card dom product;
+
+  public  generateReport : ()  ==> seq of (char)
+  generateReport() ==
+    is not yet specified;
+
+
+end Store

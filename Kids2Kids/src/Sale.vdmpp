@@ -9,11 +9,11 @@ operations
 	private calculateGrandTotal: () ==> real
 		calculateGrandTotal() == (
 			dcl sum:real := 0;
-			for all p in set dom products do sum := sum + p.getBuyPrice() * products(p);
+			for all p in set dom products do sum := sum + p.getSellPrice() * products(p);
 			return sum;
 		);
 		
-	protected Sale: Client * map Product to nat1 * Date ==> Sale
+	public Sale: Client * map Product to nat1 * Date ==> Sale
 		Sale(c,ps,d) == (
 			client := c;
 			products := ps;

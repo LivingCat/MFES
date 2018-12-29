@@ -16,10 +16,10 @@ operations
 			return self;
 		);
 	
-	public getBuyPrice: () ==> real 
+	pure public getBuyPrice: () ==> real 
 		getBuyPrice() == return buyPrice;
 		
-	public getSellPrice: () ==> real 
+	pure public getSellPrice: () ==> real 
 		getSellPrice() == return sellPrice;
 		
 	pure public getName: () ==> seq of (char)

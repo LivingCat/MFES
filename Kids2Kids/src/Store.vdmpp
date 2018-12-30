@@ -114,7 +114,7 @@ operations
   	dcl newProduct : map Product to nat := {p |-> q};
   	product := product ++ newProduct;
   )
-  	pre not exists p2 in set dom product & p.getName() = p2.getName() and  --produto novo
+  	pre (not exists p2 in set dom product & p.getName() = p2.getName()) and  --produto novo
   		p.getClass() in set classes --existe a classe do produto
   	post card dom product = card dom product~ + 1; --temos um produto novo
   	

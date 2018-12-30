@@ -1,6 +1,4 @@
 class StoreTest
-instance variables
-	store : Store := new Store("Kids2Kids","PT",1000);
 operations
 	private assertTrue: bool ==> ()
 	assertTrue(cond) == return
@@ -15,6 +13,7 @@ operations
 		
 	private testAddProductClass: () ==> ()
 	testAddProductClass() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("food");
 		dcl pc2 : ProductClass := new ProductClass("toy");
 		
@@ -26,12 +25,15 @@ operations
 	
 	private testRemoveProductClass: () ==> ()
 	testRemoveProductClass() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("food");
 		dcl pc2 : ProductClass := new ProductClass("toy");
 		dcl p1 : Product := new Product(pc1,"apple",0.1,0.2);
 		dcl p2 : Product := new Product(pc2,"ball",5,6);
 		dcl p3 : Product := new Product(pc1,"banana",0.2,0.3);
 		
+		store.addProductClass(pc1);
+		store.addProductClass(pc2);
 		store.addProduct(p1,3);
 		store.addProduct(p2,2);
 		store.addProduct(p3,3);
@@ -47,13 +49,15 @@ operations
 	
 	private testAddProduct: () ==> ()
 	testAddProduct() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("toy");
 		dcl p1 : Product := new Product(pc1,"doll",5,6);
 		dcl products: map Product to nat := {|->};
 		
+		store.addProductClass(pc1);
 		store.addProduct(p1,3);
 	--check if we have 1 more product in the product map
-		assertTrue(store.getNumberOfProducts() = 2);
+		assertTrue(store.getNumberOfProducts() = 1);
 		
 		products := store.getStoreProducts();
 	--check if we have the right cardinality of the product in the product map
@@ -63,6 +67,15 @@ operations
 	
 	private testRemoveProduct: () ==> ()
 	testRemoveProduct() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
+		dcl pc1 : ProductClass := new ProductClass("toy");
+		dcl p1 : Product := new Product(pc1,"doll",5,6);
+		dcl p2 : Product := new Product(pc1,"ball",5,6);
+		
+		store.addProductClass(pc1);
+		store.addProduct(p1,3);
+		store.addProduct(p2,2);
+		
 		--remove ball
 		store.removeProduct("ball");
 		store.removeProduct("doll");
@@ -75,11 +88,13 @@ operations
 	
 	private testAddStock: () ==> ()
 	testAddStock() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("food");
 		dcl p1 : Product := new Product(pc1,"apple",0.1,0.2);
 		dcl p2 : Product := new Product(pc1,"banana",0.2,0.3);
 		dcl products: map Product to nat := {|->};
 		
+		store.addProductClass(pc1);
 		--store add 2 apples
 		store.addProduct(p1,2);
 		--now store has 4 more apples
@@ -97,6 +112,7 @@ operations
 
 	private testBuyFromClient: () ==> ()
 	testBuyFromClient() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("toy");
 		dcl p1 : Product := new Product(pc1,"doll",0.1,0.2);
 		dcl p2 : Product := new Product(pc1,"cube",0.2,0.3);
@@ -107,6 +123,7 @@ operations
 		dcl products: map Product to nat := {|->};
 		dcl cash: real := store.getCash();
 		
+		store.addProductClass(pc1);
 		store.addProduct(p1,1);
 		store.addProduct(p2,0);
 		
@@ -119,6 +136,39 @@ operations
 		--check if cash decreased
 		assertEqual(store.getCash(),cash - 0.8);
 	);
+	
+		private testBuyFromSupplier: () ==> ()
+	testBuyFromSupplier() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
+		dcl pc1 : ProductClass := new ProductClass("toy");
+		dcl pc2 : ProductClass := new ProductClass("food");
+		dcl p1 : Product := new Product(pc1,"doll",0.1,0.2);
+		dcl p2 : Product := new Product(pc2,"apple",0.1,0.2);
+		dcl bought : map Product to nat1 := {p1|->2, p2 |-> 3};
+		dcl supplier : Supplier := new Supplier("joao");
+		dcl date : Date := new Date(30,12,2018);
+		dcl purchase: PurchaseFromSupplier;
+		dcl products: map Product to nat := {|->};
+		dcl cash: real := store.getCash();
+		
+		store.addProductClass(pc1);
+		store.addProductClass(pc2);
+		store.addProduct(p1,1);
+		store.addProduct(p2,0);
+		products := store.getStoreProducts();
+		assertTrue(products(p1) = 1);
+		assertTrue(products(p2) = 0);
+		
+		purchase := store.buy(bought,supplier,date);
+		--check if we have a new purchase in the purchase map
+		assertTrue(store.getNumberOfPurchases() = 1);
+		--check if the products quantity increased
+		products := store.getStoreProducts();
+		
+		for all p in set dom products do if(p.getName() = p1.getName() or p.getName() = p2.getName()) then assertEqual(3,products(p));
+		--check if cash decreased
+		assertEqual(store.getCash(),cash - 0.5);
+	);
 
 	public static main: () ==> ()
 	main() == (
@@ -130,6 +180,7 @@ operations
 		testSuite.testRemoveProduct();
 		testSuite.testAddStock();
 		testSuite.testBuyFromClient();
+		testSuite.testBuyFromSupplier();
 	);
 	
 	

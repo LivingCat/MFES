@@ -9,7 +9,7 @@ operations
 		-- Simulates assertion checking by reducing it to post-condition checking.
 	-- If values are not equal, prints a message in the console and generates 
 	-- a post-conditions violation.
-	protected assertEqual: ? * ? ==> ()
+	private assertEqual: ? * ? ==> ()
 	assertEqual(expected, actual) == return
 		post expected = actual;
 		
@@ -56,7 +56,6 @@ operations
 		assertTrue(store.getNumberOfProducts() = 2);
 		
 		products := store.getStoreProducts();
-		
 	--check if we have the right cardinality of the product in the product map
 		for all p in set dom products do if (p.getName() = p1.getName()) then assertEqual(3,products(p)); 
 		
@@ -73,6 +72,27 @@ operations
 		assertTrue(store.getNumberOfProducts() = 0);
 
 	);
+	
+	private testAddStock: () ==> ()
+	testAddStock() == (
+		dcl pc1 : ProductClass := new ProductClass("food");
+		dcl p1 : Product := new Product(pc1,"apple",0.1,0.2);
+		dcl p2 : Product := new Product(pc1,"banana",0.2,0.3);
+		dcl products: map Product to nat := {|->};
+		
+		--store add 2 apples
+		store.addProduct(p1,2);
+		--now store has 4 more apples
+		store.addStock(p1,4);
+		--store had 0 bananas
+		store.addProduct(p2,0);
+		--now store has 3 bananas
+		store.addStock(p2,3);
+		
+		products := store.getStoreProducts();
+		for all p in set dom products do if (p.getName() = p1.getName()) then assertEqual(6,products(p)); 
+		for all p in set dom products do if (p.getName() = p2.getName()) then assertEqual(3,products(p)); 
+	);
 
 	public static main: () ==> ()
 	main() == (
@@ -82,6 +102,7 @@ operations
 		testSuite.testRemoveProductClass();
 		testSuite.testAddProduct();
 		testSuite.testRemoveProduct();
+		testSuite.testAddStock();
 	);
 	
 	

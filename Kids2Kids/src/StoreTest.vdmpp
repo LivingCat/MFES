@@ -13,7 +13,7 @@ operations
 		
 	private testAddProductClass: () ==> ()
 	testAddProductClass() == (
-		dcl store : Store := new Store("Kids2Kids","PT",1000);
+		dcl store : Store := new Store("Kids2Kids","UK");
 		dcl pc1 : ProductClass := new ProductClass("food");
 		dcl pc2 : ProductClass := new ProductClass("toy");
 		
@@ -137,7 +137,7 @@ operations
 		assertEqual(store.getCash(),cash - 0.8);
 	);
 	
-		private testBuyFromSupplier: () ==> ()
+	private testBuyFromSupplier: () ==> ()
 	testBuyFromSupplier() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("toy");
@@ -169,6 +169,37 @@ operations
 		--check if cash decreased
 		assertEqual(store.getCash(),cash - 0.5);
 	);
+	
+private testSell: () ==> ()
+	testSell() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
+		dcl pc1 : ProductClass := new ProductClass("toy");
+		dcl pc2 : ProductClass := new ProductClass("food");
+		dcl p1 : Product := new Product(pc1,"doll",0.1,0.2);
+		dcl p2 : Product := new Product(pc2,"apple",0.1,0.2);
+		dcl sold : map Product to nat1 := {p1|->1, p2 |-> 1};
+		dcl client : Client := new Client("joao");
+		dcl date : Date := new Date(30,12,2018);
+		dcl sale: Sale;
+		dcl products: map Product to nat := {|->};
+		dcl cash: real := store.getCash();
+		
+		store.addProductClass(pc1);
+		store.addProductClass(pc2);
+		store.addProduct(p1,5);
+		store.addProduct(p2,5);
+		products := store.getStoreProducts();
+		
+		sale := store.sell(sold,client,date);
+		--check if we have a new sale in the sale set
+		assertTrue(store.getNumberOfSales() = 1);
+		--check if the products quantity increased
+		products := store.getStoreProducts();
+		
+		for all p in set dom products do if(p.getName() = p1.getName() or p.getName() = p2.getName()) then assertEqual(4,products(p));
+		--check if cash decreased
+		assertEqual(store.getCash(),cash + 0.4);
+	);
 
 	public static main: () ==> ()
 	main() == (
@@ -181,6 +212,7 @@ operations
 		testSuite.testAddStock();
 		testSuite.testBuyFromClient();
 		testSuite.testBuyFromSupplier();
+		testSuite.testSell();
 	);
 	
 	

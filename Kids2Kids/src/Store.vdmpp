@@ -166,6 +166,9 @@ operations
  	
  	public getNumberOfProducts : () ==> nat
  	getNumberOfProducts() == return card dom product;
+ 	
+ 	public getStoreProducts : () ==> map Product to nat
+ 	getStoreProducts() == return product;
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==

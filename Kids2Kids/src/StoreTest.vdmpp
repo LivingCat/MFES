@@ -6,6 +6,13 @@ operations
 	assertTrue(cond) == return
 		pre cond;
 		
+		-- Simulates assertion checking by reducing it to post-condition checking.
+	-- If values are not equal, prints a message in the console and generates 
+	-- a post-conditions violation.
+	protected assertEqual: ? * ? ==> ()
+	assertEqual(expected, actual) == return
+		post expected = actual;
+		
 	private testAddProductClass: () ==> ()
 	testAddProductClass() == (
 		dcl pc1 : ProductClass := new ProductClass("food");
@@ -38,10 +45,28 @@ operations
 		--assertTrue({pc},store.
 	);
 	
+	private testAddProduct: () ==> ()
+	testAddProduct() == (
+		dcl pc1 : ProductClass := new ProductClass("toy");
+		dcl p1 : Product := new Product(pc1,"doll",5,6);
+		dcl products: map Product to nat := {|->};
+		
+		store.addProduct(p1,3);
+	--check if we have 1 more product in the product map
+		assertTrue(store.getNumberOfProducts() = 2);
+		
+		products := store.getStoreProducts();
+		
+	--check if we have the right cardinality of the product in the product map
+		for all p in set dom products do if (p.getName() = p1.getName()) then assertEqual(3,products(p)); 
+		
+	);
+	
 	private testRemoveProduct: () ==> ()
 	testRemoveProduct() == (
 		--remove ball
 		store.removeProduct("ball");
+		store.removeProduct("doll");
 		--check if the store still has the "toy" class
 		assertTrue(store.getNumberOfProductClasses() = 1);
 		--check if store has 0 products
@@ -55,6 +80,7 @@ operations
 		
 		testSuite.testAddProductClass();
 		testSuite.testRemoveProductClass();
+		testSuite.testAddProduct();
 		testSuite.testRemoveProduct();
 	);
 	

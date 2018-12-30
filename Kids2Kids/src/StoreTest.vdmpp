@@ -93,6 +93,32 @@ operations
 		for all p in set dom products do if (p.getName() = p1.getName()) then assertEqual(6,products(p)); 
 		for all p in set dom products do if (p.getName() = p2.getName()) then assertEqual(3,products(p)); 
 	);
+	
+
+	private testBuyFromClient: () ==> ()
+	testBuyFromClient() == (
+		dcl pc1 : ProductClass := new ProductClass("toy");
+		dcl p1 : Product := new Product(pc1,"doll",0.1,0.2);
+		dcl p2 : Product := new Product(pc1,"cube",0.2,0.3);
+		dcl bought : map Product to nat1 := {p1|->2, p2 |-> 3};
+		dcl client : Client := new Client("maria");
+		dcl date : Date := new Date(30,12,2018);
+		dcl purchase: PurchaseFromClient;
+		dcl products: map Product to nat := {|->};
+		dcl cash: real := store.getCash();
+		
+		store.addProduct(p1,1);
+		store.addProduct(p2,0);
+		
+		purchase := store.buy(bought,client,date);
+		--check if we have a new purchase in the purchase map
+		assertTrue(store.getNumberOfPurchases() = 1);
+		--check if the products quantity increased
+		products := store.getStoreProducts();
+		for all p in set dom products do if(p.getName() = p1.getName() or p.getName() = p2.getName()) then assertEqual(3,products(p));
+		--check if cash decreased
+		assertEqual(store.getCash(),cash - 0.8);
+	);
 
 	public static main: () ==> ()
 	main() == (
@@ -103,6 +129,7 @@ operations
 		testSuite.testAddProduct();
 		testSuite.testRemoveProduct();
 		testSuite.testAddStock();
+		testSuite.testBuyFromClient();
 	);
 	
 	

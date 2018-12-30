@@ -169,6 +169,9 @@ operations
  	
  	public getStoreProducts : () ==> map Product to nat
  	getStoreProducts() == return product;
+ 	
+ 	public getCash : () ==> real
+ 	getCash() == return cash;
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==

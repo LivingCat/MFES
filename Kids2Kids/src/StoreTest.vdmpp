@@ -37,6 +37,17 @@ operations
 		assertTrue(store.getNumberOfProducts() = 1);
 		--assertTrue({pc},store.
 	);
+	
+	private testRemoveProduct: () ==> ()
+	testRemoveProduct() == (
+		--remove ball
+		store.removeProduct("ball");
+		--check if the store still has the "toy" class
+		assertTrue(store.getNumberOfProductClasses() = 1);
+		--check if store has 0 products
+		assertTrue(store.getNumberOfProducts() = 0);
+
+	);
 
 	public static main: () ==> ()
 	main() == (
@@ -44,6 +55,7 @@ operations
 		
 		testSuite.testAddProductClass();
 		testSuite.testRemoveProductClass();
+		testSuite.testRemoveProduct();
 	);
 	
 	

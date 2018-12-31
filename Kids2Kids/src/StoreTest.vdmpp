@@ -16,9 +16,13 @@ operations
 		dcl date : Date;
 		
 		date := new Date(29,02,2020);
+		assertEqual(date.getDate(),"29/02/2020");
 		date := new Date(28,02,2019);
+		assertEqual(date.getDate(),"28/02/2019");
+		date := new Date(04,06,5789);
+		assertEqual(date.getDate(),"04/06/5789");
 		date := new Date(08,03,2019);
-		date := new Date(08,04,2019);
+		assertEqual(date.getDate(),"08/03/2019");
 	);
 		
 	private testAddProductClass: () ==> ()

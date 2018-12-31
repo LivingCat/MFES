@@ -8,5 +8,8 @@ operations
 		supplier := s;
 		Purchase(ps,d);
 	);
+	
+	public getSupplier: () ==> Supplier
+	getSupplier() == return supplier;
 
 end PurchaseFromSupplier

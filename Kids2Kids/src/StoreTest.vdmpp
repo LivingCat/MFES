@@ -24,10 +24,18 @@ operations
 		date := new Date(08,03,2019);
 		assertEqual(date.getDate(),"08/03/2019");
 	);
+	
+	private testCreateStore: () ==> ()
+	testCreateStore() == (
+		dcl store : Store := new Store("Kids2Kids","UK");
+		assertEqual(store.getName(),"Kids2Kids");
+		assertEqual(store.getCountry(),"UK");
+		assertEqual(store.getCash(),0);
+	);
 		
 	private testAddProductClass: () ==> ()
 	testAddProductClass() == (
-		dcl store : Store := new Store("Kids2Kids","UK");
+		dcl store : Store := new Store("Kids2Kids","UK",1000);
 		dcl pc1 : ProductClass := new ProductClass("food");
 		dcl pc2 : ProductClass := new ProductClass("toy");
 		
@@ -220,6 +228,7 @@ private testSell: () ==> ()
 		dcl testSuite : StoreTest := new StoreTest();
 		
 		testSuite.testDate();
+		testSuite.testCreateStore();
 		testSuite.testAddProductClass();
 		testSuite.testRemoveProductClass();
 		testSuite.testAddProduct();

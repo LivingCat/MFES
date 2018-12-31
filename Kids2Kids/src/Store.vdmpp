@@ -172,10 +172,24 @@ operations
  	
  	public getCash : () ==> real
  	getCash() == return cash;
+ 	
+ 	public getSales: () ==> set of (Sale)
+ 	getSales() == return sale;
+ 	
+ 	public getPurchases: () ==> set of (Purchase)
+ 	getPurchases() == return purchase;
+ 	
+ 	public getName: () ==> seq of (char)
+ 	getName() == return name;
+ 	
+ 	public getCountry: () ==> seq of (char)
+ 	getCountry() == return country;
+ 	
+ 	public getProductClasses: () ==> set of(ProductClass)
+ 	getProductClasses() == return classes;
 
   public  generateReport : ()  ==> seq of (char)
   generateReport() ==
     is not yet specified;
-
 
 end Store

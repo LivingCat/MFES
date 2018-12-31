@@ -21,5 +21,14 @@ operations
 		)
 			pre card dom ps > 0
 			post grandTotal > 0;
+	
+	public getProducts: () ==> map Product to nat1
+	getProducts() == return products;
+	
+	public getDate: () ==> Date
+	getDate() == return date;
+	
+	public getGrandTotal: () ==> real
+	getGrandTotal() == return grandTotal;
 
 end Purchase

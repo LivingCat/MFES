@@ -8,5 +8,8 @@ operations
 		client := c;
 		Purchase(ps,d);
 	);
+	
+	public getClient: () ==> Client
+	getClient() == return getClient(); 
 
 end PurchaseFromClient

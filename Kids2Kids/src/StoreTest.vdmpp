@@ -11,6 +11,16 @@ operations
 	assertEqual(expected, actual) == return
 		post expected = actual;
 		
+	private testDate: () ==> () 
+	testDate() == (
+		dcl date : Date;
+		
+		date := new Date(29,02,2020);
+		date := new Date(28,02,2019);
+		date := new Date(08,03,2019);
+		date := new Date(08,04,2019);
+	);
+		
 	private testAddProductClass: () ==> ()
 	testAddProductClass() == (
 		dcl store : Store := new Store("Kids2Kids","UK");
@@ -205,6 +215,7 @@ private testSell: () ==> ()
 	main() == (
 		dcl testSuite : StoreTest := new StoreTest();
 		
+		testSuite.testDate();
 		testSuite.testAddProductClass();
 		testSuite.testRemoveProductClass();
 		testSuite.testAddProduct();

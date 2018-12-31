@@ -10,6 +10,6 @@ operations
 	);
 	
 	public getClient: () ==> Client
-	getClient() == return getClient(); 
+	getClient() == return client; 
 
 end PurchaseFromClient

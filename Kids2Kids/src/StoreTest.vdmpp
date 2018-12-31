@@ -41,8 +41,10 @@ operations
 		
 		store.addProductClass(pc1);
 		store.addProductClass(pc2);
-		assertTrue(store.getNumberOfProductClasses() = 2);
-		--testar se as product classes tem os nomes que pusemos maybe
+		assertEqual(store.getNumberOfProductClasses(),2);
+		
+		assertTrue(exists1 pc in set store.getProductClasses() & pc.getName() = "food");
+		assertTrue(exists1 pc in set store.getProductClasses() & pc.getName() = "toy");
 	);
 	
 	private testRemoveProductClass: () ==> ()
@@ -60,13 +62,14 @@ operations
 		store.addProduct(p2,2);
 		store.addProduct(p3,3);
 		
-		assertTrue(store.getNumberOfProductClasses() = 2);
-		assertTrue(store.getNumberOfProducts() = 3);
+		assertEqual(store.getNumberOfProductClasses(),2);
+		assertEqual(store.getNumberOfProducts(),3);
 		 
 		store.removeProductClass("food");
-		assertTrue(store.getNumberOfProductClasses() = 1);
-		assertTrue(store.getNumberOfProducts() = 1);
-		--assertTrue({pc},store.
+		assertEqual(store.getNumberOfProductClasses(),1);
+		assertEqual(store.getNumberOfProducts(),1);
+		assertTrue(not exists pc in set store.getProductClasses() & pc.getName() = "food");
+		assertTrue(not exists p in set dom store.getStoreProducts() & p.getClass().getName() = "food");
 	);
 	
 	private testAddProduct: () ==> ()
@@ -79,7 +82,8 @@ operations
 		store.addProductClass(pc1);
 		store.addProduct(p1,3);
 	--check if we have 1 more product in the product map
-		assertTrue(store.getNumberOfProducts() = 1);
+		assertEqual(store.getNumberOfProducts(),1);
+		assertTrue(exists1 p in set dom store.getStoreProducts() & p.getName() = "doll");
 		
 		products := store.getStoreProducts();
 	--check if we have the right cardinality of the product in the product map
@@ -100,11 +104,13 @@ operations
 		
 		--remove ball
 		store.removeProduct("ball");
+		assertTrue(not exists p in set dom store.getStoreProducts() & p.getName() = "ball");
 		store.removeProduct("doll");
+		assertTrue(not exists p in set dom store.getStoreProducts() & p.getName() = "doll");
 		--check if the store still has the "toy" class
-		assertTrue(store.getNumberOfProductClasses() = 1);
+		assertEqual(store.getNumberOfProductClasses(),1);
 		--check if store has 0 products
-		assertTrue(store.getNumberOfProducts() = 0);
+		assertEqual(store.getNumberOfProducts(),0);
 
 	);
 	
@@ -121,7 +127,7 @@ operations
 		store.addProduct(p1,2);
 		--now store has 4 more apples
 		store.addStock(p1,4);
-		--store had 0 bananas
+		--store add 0 bananas
 		store.addProduct(p2,0);
 		--now store has 3 bananas
 		store.addStock(p2,3);
@@ -150,8 +156,16 @@ operations
 		store.addProduct(p2,0);
 		
 		purchase := store.buy(bought,client,date);
+		
+		--check if grand total was calculated correctly
+		assertEqual(purchase.getGrandTotal(),0.8);
+		
 		--check if we have a new purchase in the purchase map
-		assertTrue(store.getNumberOfPurchases() = 1);
+		assertEqual(store.getNumberOfPurchases(),1);
+		assertTrue(exists1 p in set store.getPurchases() & isofclass(PurchaseFromClient,p) => narrow_(p,PurchaseFromClient).getClient().getName() = "maria");
+		assertTrue(exists1 p in set store.getPurchases() & p.getDate().getDate() = "30/12/2018");
+		assertTrue(exists1 p in set store.getPurchases() & card ({p1,p2} inter dom p.getProducts()) = 2);
+		
 		--check if the products quantity increased
 		products := store.getStoreProducts();
 		for all p in set dom products do if(p.getName() = p1.getName() or p.getName() = p2.getName()) then assertEqual(3,products(p));
@@ -182,8 +196,16 @@ operations
 		assertTrue(products(p2) = 0);
 		
 		purchase := store.buy(bought,supplier,date);
+		
+		--check if grand total was calculated correctly
+		assertEqual(purchase.getGrandTotal(),0.5);
+		
 		--check if we have a new purchase in the purchase map
 		assertTrue(store.getNumberOfPurchases() = 1);
+		assertTrue(exists1 p in set store.getPurchases() & isofclass(PurchaseFromSupplier,p) => narrow_(p,PurchaseFromSupplier).getSupplier().getName() = "joao");
+		assertTrue(exists1 p in set store.getPurchases() & p.getDate().getDate() = "30/12/2018");
+		assertTrue(exists1 p in set store.getPurchases() & card ({p1,p2} inter dom p.getProducts()) = 2);
+		
 		--check if the products quantity increased
 		products := store.getStoreProducts();
 		
@@ -213,13 +235,21 @@ private testSell: () ==> ()
 		products := store.getStoreProducts();
 		
 		sale := store.sell(sold,client,date);
+		
+		--check if grand total was calculated correctly
+		assertEqual(sale.getGrandTotal(),0.4);
+		
 		--check if we have a new sale in the sale set
 		assertTrue(store.getNumberOfSales() = 1);
-		--check if the products quantity increased
+		assertTrue(exists1 s in set store.getSales() & s.getClient().getName() = "joao");
+		assertTrue(exists1 s in set store.getSales() & s.getDate().getDate() = "30/12/2018");
+		assertTrue(exists1 s in set store.getSales() & card ({p1,p2} inter dom s.getProducts()) = 2);
+		
+		--check if the products quantity decreased
 		products := store.getStoreProducts();
 		
 		for all p in set dom products do if(p.getName() = p1.getName() or p.getName() = p2.getName()) then assertEqual(4,products(p));
-		--check if cash decreased
+		--check if cash increased
 		assertEqual(store.getCash(),cash + 0.4);
 	);
 

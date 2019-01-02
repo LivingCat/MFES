@@ -1,7 +1,10 @@
 package Kids2Kids;
 
 import java.util.*;
+
 import org.overture.codegen.runtime.*;
+
+import Interface.utils;
 
 @SuppressWarnings("all")
 public class Store {
@@ -269,5 +272,26 @@ public class Store {
         + ", cash := "
         + Utils.toString(cash)
         + "}";
+  }
+  
+  public void seed() {
+	  ProductClass c = new ProductClass("food");
+	  Product p1 = new Product(c,"apple",0.1,0.2);
+	  Product p2 = new Product(c,"banana",0.2,0.3);
+	  addProductClass(c);
+	  addProduct(p1,10);
+	  addProduct(p2,5);
+	  
+	  Client client = new Client("Matilde Freilao");
+	  Supplier supplier = new Supplier("Catarina Ferreira");
+	  VDMMap productsToSell = new VDMMap();
+	  productsToSell.put(p1, 1);
+	  productsToSell.put(p2, 1);
+	  VDMMap productsToBuy = new VDMMap();
+	  productsToBuy.put(p1, 3);
+	  productsToBuy.put(p2, 4);
+	  Date date = utils.today();
+	  this.sell(productsToSell, client, date);
+	  this.buy(productsToBuy, supplier, date);
   }
 }

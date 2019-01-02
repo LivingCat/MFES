@@ -133,7 +133,8 @@ operations
   	dcl newProduct : map Product to nat := {p |-> q1};
   	product := product ++ newProduct;
   )
-  	pre p in set dom product;
+  	pre p in set dom product
+  	post product(p) = product~(p) + q;
   	
   public addProductClass: ProductClass ==> ()
   addProductClass(pc) == classes := classes union {pc}

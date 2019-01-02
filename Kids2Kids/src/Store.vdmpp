@@ -60,7 +60,7 @@ operations
   	
   	cash := cash - calculateGrandTotalPurchase(products); 
   	
-  	return newPurchase;
+  	return narrow_(newPurchase,PurchaseFromClient);
   )
 		pre card dom products > 0 and 
 			forall p in set dom products & p in set dom product and
@@ -80,7 +80,7 @@ operations
   	
   	cash := cash - calculateGrandTotalPurchase(products);  
   	
-  	return newPurchase;
+  	return narrow_(newPurchase,PurchaseFromSupplier);
   )
   	pre card dom products > 0 and 
 			forall p in set dom products & p in set dom product and

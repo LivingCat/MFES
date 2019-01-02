@@ -1,5 +1,10 @@
 package Interface;
 
+import java.util.Iterator;
+
+import org.overture.codegen.runtime.VDMSet;
+
+import Kids2Kids.ProductClass;
 import Kids2Kids.Store;
 
 public class Products {
@@ -15,7 +20,13 @@ public class Products {
 		utils.printMenuTitle("Product Classes");
 		System.out.println();
 		
-		System.out.println(store.getProductClasses());
+		VDMSet classes = store.getProductClasses();
+		
+		int i = 1;
+		for (Iterator it = classes.iterator(); it.hasNext();) {
+			ProductClass c = (ProductClass) it.next();
+			System.out.println(i + " - " + c);
+		}
 	}
 
 }

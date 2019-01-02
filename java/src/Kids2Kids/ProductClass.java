@@ -27,6 +27,6 @@ public class ProductClass {
 
   public String toString() {
 
-    return "ProductClass{" + "name := " + Utils.toString(name) + "}";
+    return name;
   }
 }

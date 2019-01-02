@@ -57,6 +57,8 @@ public class utils {
 		for(int i = 0; i < title.length(); i++) {
 			System.out.print("-+");
 		}
+		
+		System.out.println();
 	}
 	
 	public static void closeScanner() {

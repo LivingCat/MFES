@@ -271,9 +271,7 @@ private testSell: () ==> ()
 	
 	
 	--------------------------Invalid tests -----------------------------
-	
-	-- try to remove a product that doesnt exist in the store
-	
+		
 	--experimentar comprar quantidade negativa de produtos just to see what happens 
 	
 	-- try to buy a product that doesn't yet exist in the store
@@ -360,6 +358,35 @@ private testSell: () ==> ()
 				store.addProduct(p2,3);			--breaks pre condition
 	);
 	
+		-- try to remove a product that doesnt exist in the store
+		public testRemoveNonExistentProduct: () ==> ()
+			testRemoveNonExistentProduct() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+				dcl p1 : Product := new Product(pc1,"doll",5,10);
+			
+				store.addProductClass(pc1);
+				store.removeProduct(p1.getName());	--breaks pre condition
+		);
 	
+		-- try to add an already existing product class to the store
+		public testAlreadyExistentProductClass: () ==> ()
+			testAlreadyExistentProductClass() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+				dcl pc2 : ProductClass := new ProductClass("toy");
+			
+				store.addProductClass(pc1);
+				store.addProductClass(pc2); --breaks pre condition
+	);
+	
+		-- try to remove a product class that doesnt exist in the store
+		public testRemoveNonExistentProductClass: () ==> ()
+			testRemoveNonExistentProductClass() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+			
+				store.removeProductClass(pc1.getName());	--breaks pre condition
+		);
 	
 end StoreTest

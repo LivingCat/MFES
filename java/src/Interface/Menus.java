@@ -87,7 +87,7 @@ public class Menus {
 				view.printProductClasses();
 				break;
 			case 2:
-				salesMenu();
+				view.printProducts();
 				break;
 			case 3:
 				purchasesMenu();
@@ -102,13 +102,13 @@ public class Menus {
 		
 	}
 	
-	public static void salesMenu() {
+	public void salesMenu() {
 		
 	}
 	
-	public static void purchasesMenu() {
+	public void purchasesMenu() {
 		
 	}
 	
-	public static void printReport() {}
+	public void printReport() {}
 }

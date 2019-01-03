@@ -49,16 +49,10 @@ public class Product {
   public Product() {}
 
   public String toString() {
-
-    return "Product{"
-        + "productClass := "
-        + Utils.toString(productClass)
-        + ", name := "
-        + Utils.toString(name)
-        + ", buyPrice := "
-        + Utils.toString(buyPrice)
-        + ", sellPrice := "
-        + Utils.toString(sellPrice)
-        + "}";
+	  
+	return name + "\n" + 
+			"\tclass: " + productClass + "\n" + 
+			"\tbuy price: " + buyPrice + "\n" + 
+			"\tsell price: " + sellPrice;
   }
 }

@@ -41,6 +41,23 @@ public class StoreMenu {
 		System.out.println("8. Back");
 	}
 	
+	public void printSalesMenu() {
+		utils.printMenuTitle("SALES");
+		System.out.println();
+		System.out.println("1. List past sales");
+		System.out.println("2. Create new sale");
+		System.out.println("3. Back");
+	}
+	
+	public void printPurchasesMenu() {
+		utils.printMenuTitle("PURCHASES");
+		System.out.println();
+		System.out.println("1. List past purchases");
+		System.out.println("2. Create new client purchase");
+		System.out.println("3. Create new supplier purchase");
+		System.out.println("4. Back");
+	}
+	
 	public void mainMenu() {
 		
 		while(true) {
@@ -107,6 +124,24 @@ public class StoreMenu {
 	}
 	
 	public void salesMenu() {
+		
+		while(true) {
+			utils.clearScreen();
+			printSalesMenu();
+			int choice = utils.inputInt("Please write your choice: ",1,3);
+			Sales view =  new Sales(store);
+			
+			switch(choice) {
+			case 1: 
+				view.listSales();
+				break;
+			case 2:
+				view.createNewSale();
+				break;
+			case 3:
+				return;
+			}
+		}
 		
 	}
 	

@@ -136,7 +136,6 @@ public class utils {
 	
 	public static Date today() {
 		Calendar cal = Calendar.getInstance();
-		
-		return new Date(cal.DAY_OF_MONTH,cal.MONTH,cal.YEAR);
+		return new Date(cal.get(cal.DAY_OF_MONTH),cal.get(cal.MONTH) + 1,cal.get(cal.YEAR));
 	}
 }

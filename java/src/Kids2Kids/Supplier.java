@@ -27,6 +27,6 @@ public class Supplier {
 
   public String toString() {
 
-    return "Supplier{" + "name := " + Utils.toString(name) + "}";
+    return name;
   }
 }

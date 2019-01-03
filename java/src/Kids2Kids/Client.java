@@ -26,7 +26,7 @@ public class Client {
   public Client() {}
 
   public String toString() {
-
-    return "Client{" + "name := " + Utils.toString(name) + "}";
+	  
+	return name;
   }
 }

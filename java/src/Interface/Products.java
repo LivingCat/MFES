@@ -125,6 +125,12 @@ public class Products {
 		utils.printMenuTitle("Register New Product");
 		System.out.println();
 		
+		if(this.store.getNumberOfProductClasses().equals(0)) {
+			System.out.println("No classes available! Try adding one first?");
+			utils.pressEnterToContinue();
+			return;
+		}
+		
 		System.out.println("Choose product class: ");
 		HashMap<Integer,Object> classes = this.printProductClasses();
 		

@@ -1,11 +1,9 @@
 package Interface;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.overture.codegen.runtime.VDMMap;
 import org.overture.codegen.runtime.VDMSet;
 
 import Kids2Kids.Product;

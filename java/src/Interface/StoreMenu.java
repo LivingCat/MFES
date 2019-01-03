@@ -1,18 +1,13 @@
 package Interface;
 
-import java.util.Scanner;
-
 import Kids2Kids.Store;
 
-public class Menus {
+public class StoreMenu {
 	
-	private Store store = new Store("Kids2Kids","PT",1000);
-	static public Menus menu = new Menus();
-
-	public static void main(String[] args) {
-		
-		menu.store.seed();
-		menu.mainMenu();           
+	private Store store;
+	
+	public StoreMenu(Store store) {
+		this.store = store;
 	}
 	
 	public void printMainTitle() {

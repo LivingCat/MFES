@@ -71,6 +71,7 @@ public class utils {
 	
 	public static void pressEnterToContinue() {
 		System.out.println("Press \"ENTER\" to continue...");
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		sc.nextLine();
 	}

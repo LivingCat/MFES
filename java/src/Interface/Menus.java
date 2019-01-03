@@ -95,6 +95,12 @@ public class Menus {
 			case 4:
 				view.deleteClass();
 				break;
+			case 5:
+				view.registerNewProduct();
+				break;
+			case 6:
+				view.deleteProduct();
+				break;
 			case 8:
 				return;
 			}

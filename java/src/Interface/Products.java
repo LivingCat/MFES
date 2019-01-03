@@ -76,10 +76,13 @@ public class Products {
 			className = utils.inputString("New class name: ");
 			nameAlreadyExists = classNameAlreadyExists(className);
 			
-			if(nameAlreadyExists) {
+			if(className.length() == 0) {
+				System.out.println("Invalid class name! A class can't have an empty name.");
+			} else if(nameAlreadyExists) {
 				System.out.println("Invalid class name! Another class with the same name already exists.");
 			}
-		} while (nameAlreadyExists);
+			
+		} while (className.length() == 0 || nameAlreadyExists);
 		
 		ProductClass newClass = new ProductClass(className);
 		this.store.addProductClass(newClass);
@@ -116,5 +119,76 @@ public class Products {
 		System.out.println("Deleted!");
 		utils.pressEnterToContinue();
 	}
-
+	
+	public void registerNewProduct() {
+		utils.clearScreen();
+		utils.printMenuTitle("Register New Product");
+		System.out.println();
+		
+		System.out.println("Choose product class: ");
+		HashMap<Integer,Object> classes = this.printProductClasses();
+		
+		int classI = utils.inputInt("Write your choice: ", 1, classes.size());
+		ProductClass productClass = (ProductClass)classes.get(classI);
+		
+		System.out.println();
+		
+		String productName = "";
+		boolean nameAlreadyExists = false;
+		do {
+			productName = utils.inputString("New product name: ");
+			nameAlreadyExists = productNameAlreadyExists(productName);
+			
+			if(productName.length() == 0) {
+				System.out.println("Invalid product name! A product can't have an empty name.");
+			} else if(nameAlreadyExists) {
+				System.out.println("Invalid product name! Another product with the same name already exists.");
+			}
+		} while (productName.length() == 0 || nameAlreadyExists);
+		
+		System.out.println();
+		
+		double buyPrice = utils.inputDouble("Input buying price: ", 0, Double.MAX_VALUE);
+		System.out.println();
+		double sellPrice = utils.inputDouble("Input selling price: ", 0, Double.MAX_VALUE);
+		System.out.println();
+		
+		int quantity = utils.inputInt("Input initial stock: ", 0, Integer.MAX_VALUE);
+		
+		Product product = new Product(productClass,productName,buyPrice,sellPrice);
+		this.store.addProduct(product,quantity);
+		
+		System.out.println("Registered!");
+		utils.pressEnterToContinue();
+	}
+	
+	public boolean productNameAlreadyExists(String name) {
+		Set<Product> products = this.store.getStoreProducts().keySet();
+		ProductClass c = new ProductClass("placeholder");
+		Product p = new Product(c,name,0,0);
+		return products.contains(p);
+	}
+	
+	public void deleteProduct() {
+		utils.clearScreen();
+		utils.printMenuTitle("Delete Product");
+		System.out.println();
+		
+		int numberOfProducts = (int)this.store.getNumberOfProducts();
+		
+		if(numberOfProducts == 0) {
+			System.out.println("No products available! Try adding one first?");
+			utils.pressEnterToContinue();
+			return;
+		}
+		
+		HashMap<Integer,Object> list = printProducts();
+		
+		int input = utils.inputInt("Choose the product: ", 1, numberOfProducts);
+		
+		this.store.removeProduct(((Map.Entry<Product, Number>)list.get(input)).getKey().getName());
+		
+		System.out.println("Deleted!");
+		utils.pressEnterToContinue();
+	}
 }

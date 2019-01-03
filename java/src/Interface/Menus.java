@@ -101,6 +101,9 @@ public class Menus {
 			case 6:
 				view.deleteProduct();
 				break;
+			case 7:
+				view.addStock();
+				break;
 			case 8:
 				return;
 			}

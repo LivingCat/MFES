@@ -191,4 +191,33 @@ public class Products {
 		System.out.println("Deleted!");
 		utils.pressEnterToContinue();
 	}
+	
+	public void addStock() {
+		utils.clearScreen();
+		utils.printMenuTitle("Add Stock");
+		System.out.println();
+		
+		int numberOfProducts = (int)this.store.getNumberOfProducts();
+		
+		if(numberOfProducts == 0) {
+			System.out.println("No products available! Try adding one first?");
+			utils.pressEnterToContinue();
+			return;
+		}
+		
+		HashMap<Integer,Object> list = printProducts();
+		
+		int input = utils.inputInt("Choose the product: ", 1, numberOfProducts);
+		Product product = ((Map.Entry<Product, Number>)list.get(input)).getKey();
+		
+		System.out.println();
+		
+		input = utils.inputInt("How much stock to add: ", 1, Integer.MAX_VALUE);
+		Number qtt = (Number)input;
+		
+		this.store.addStock(product, qtt);
+		
+		System.out.println("Added stock to product " + product.getName() + "!");
+		utils.pressEnterToContinue();
+	}
 }

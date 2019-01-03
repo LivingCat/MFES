@@ -1,7 +1,14 @@
 package Interface;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+
+import org.overture.codegen.runtime.VDMMap;
+import org.overture.codegen.runtime.VDMSet;
 
 import Kids2Kids.Date;
 
@@ -94,6 +101,37 @@ public class utils {
 		
 		System.out.println();
 	}
+	
+	public static HashMap<Integer, Object> createMap(VDMSet set) {
+        
+        HashMap<Integer, Object> map = new HashMap<Integer, Object>();
+        
+        int count = 1;
+        for(Iterator<Object> iter = set.iterator(); iter.hasNext(); ) {
+            
+            Object e = iter.next();
+            map.put(count, e);
+            count++;
+        }
+        
+        return map;
+    }
+	
+	public static HashMap<Integer, Object> createMap(VDMMap originalMap) {
+        
+        HashMap<Integer, Object> map = new HashMap<Integer, Object>();
+        Set set = originalMap.entrySet();
+        
+        int count = 1;
+        for(Iterator<Object> iter = set.iterator(); iter.hasNext(); ) {
+            
+            Object e = iter.next();
+            map.put(count, e);
+            count++;
+        }
+        
+        return map;
+    }
 	
 	public static Date today() {
 		Calendar cal = Calendar.getInstance();

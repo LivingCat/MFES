@@ -84,16 +84,16 @@ public class Menus {
 			
 			switch(choice) {
 			case 1: 
-				view.printProductClasses();
+				view.listProductClasses();
 				break;
 			case 2:
-				view.printProducts();
+				view.listProducts();
 				break;
 			case 3:
-				purchasesMenu();
+				view.registerNewClass();
 				break;
 			case 4:
-				printReport();
+				view.deleteClass();
 				break;
 			case 8:
 				return;

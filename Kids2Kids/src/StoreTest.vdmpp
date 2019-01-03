@@ -270,4 +270,123 @@ private testSell: () ==> ()
 	);
 	
 	
+	--------------------------Invalid tests -----------------------------
+		
+	--experimentar comprar quantidade negativa de produtos just to see what happens 
+	
+	-- try to buy a product that doesn't yet exist in the store
+	public testBuyProductNonExistent: () ==> ()
+		testBuyProductNonExistent() == (
+			dcl store : Store := new Store("Kids2Kids","PT",1000);
+			dcl pc1 : ProductClass := new ProductClass("toy");
+			dcl p1 : Product := new Product(pc1,"doll",0.1,0.2);
+			dcl p2 : Product := new Product(pc1,"cube",5,10);
+			dcl client : Client := new Client("joao");
+			dcl date : Date := new Date(30,12,2018);
+			dcl buy : map Product to nat1 := {p2|->1};
+			dcl purchase: PurchaseFromClient;
+		
+			store.addProduct(p1,15);
+
+			purchase := store.buy(buy,client,date); --breaks the pre condition
+	);
+	
+	-- try to buy more products than the cash the store has
+	public testNotEnoughMoney: () ==> ()
+		testNotEnoughMoney() == (
+			dcl store : Store := new Store("Kids2Kids","PT");
+			dcl pc1 : ProductClass := new ProductClass("toy");
+			dcl p1 : Product := new Product(pc1,"doll",5,10);
+			dcl client : Client := new Client("joao");
+			dcl date : Date := new Date(30,12,2018);
+			dcl buy : map Product to nat1 := {p1|->5};
+			dcl purchase: PurchaseFromClient;
+		
+			store.addProductClass(pc1);
+			store.addProduct(p1,2);
+			
+			purchase := store.buy(buy,client,date); --breaks the pre condition
+	);
+	
+	-- try to sell more than we have in stock
+	public testSellTooMuch: () ==> ()
+	testSellTooMuch() == (
+			dcl store : Store := new Store("Kids2Kids","PT");
+			dcl pc1 : ProductClass := new ProductClass("toy");
+			dcl p1 : Product := new Product(pc1,"doll",5,10);
+			dcl client : Client := new Client("joao");
+			dcl date : Date := new Date(30,12,2018);
+			dcl sell : map Product to nat1 := {p1|->5};
+			dcl sale: Sale;
+		
+			store.addProductClass(pc1);
+			store.addProduct(p1,2);
+			
+			sale := store.sell(sell,client,date); --breaks the pre condition
+			
+	);
+	
+	-- try to sell a product that doesn't exist in the store
+		public testSellNonExistent: () ==> ()
+			testSellNonExistent() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+				dcl p1 : Product := new Product(pc1,"doll",5,10);
+				dcl p2 : Product := new Product(pc1,"cube",2,3);
+				dcl client : Client := new Client("joao");
+				dcl date : Date := new Date(30,12,2018);
+				dcl sell : map Product to nat1 := {p2|->5};
+				dcl sale: Sale;
+			
+				store.addProductClass(pc1);
+				store.addProduct(p1,2);
+			
+				sale := store.sell(sell,client,date); --breaks the pre condition
+			
+	);
+	
+	-- try to add an already existing product to the store
+		public testAlreadyExistentProduct: () ==> ()
+			testAlreadyExistentProduct() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+				dcl p1 : Product := new Product(pc1,"doll",5,10);
+				dcl p2 : Product := new Product(pc1,"doll",2,3);
+			
+				store.addProductClass(pc1);
+				store.addProduct(p1,2);
+				store.addProduct(p2,3);			--breaks pre condition
+	);
+	
+		-- try to remove a product that doesnt exist in the store
+		public testRemoveNonExistentProduct: () ==> ()
+			testRemoveNonExistentProduct() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+				dcl p1 : Product := new Product(pc1,"doll",5,10);
+			
+				store.addProductClass(pc1);
+				store.removeProduct(p1.getName());	--breaks pre condition
+		);
+	
+		-- try to add an already existing product class to the store
+		public testAlreadyExistentProductClass: () ==> ()
+			testAlreadyExistentProductClass() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+				dcl pc2 : ProductClass := new ProductClass("toy");
+			
+				store.addProductClass(pc1);
+				store.addProductClass(pc2); --breaks pre condition
+	);
+	
+		-- try to remove a product class that doesnt exist in the store
+		public testRemoveNonExistentProductClass: () ==> ()
+			testRemoveNonExistentProductClass() == (
+				dcl store : Store := new Store("Kids2Kids","PT");
+				dcl pc1 : ProductClass := new ProductClass("toy");
+			
+				store.removeProductClass(pc1.getName());	--breaks pre condition
+		);
+	
 end StoreTest

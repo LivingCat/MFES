@@ -47,51 +47,59 @@ public class Menus {
 	}
 	
 	public void mainMenu() {
-		utils.clearScreen();
-		printMainTitle();
-		System.out.println();
-		printMainMenu();
-		int choice = utils.userInput(1,4);
 		
-		switch(choice) {
-		case 1: 
-			productsMenu();
-			break;
-		case 2:
-			salesMenu();
-			break;
-		case 3:
-			purchasesMenu();
-			break;
-		case 4:
-			printReport();
-			break;
-		case 5:
-			utils.closeScanner();
-			break;
+		while(true) {
+			utils.clearScreen();
+			printMainTitle();
+			System.out.println();
+			printMainMenu();
+			int choice = utils.inputInt("Please write your choice: ",1,5);
+			
+			switch(choice) {
+			case 1: 
+				productsMenu();
+				break;
+			case 2:
+				salesMenu();
+				break;
+			case 3:
+				purchasesMenu();
+				break;
+			case 4:
+				printReport();
+				break;
+			case 5:
+				return;
+			}
 		}
 	}
 	
 	public void productsMenu() {
-		utils.clearScreen();
-		printProductsMenu();
-		int choice = utils.userInput(1,8);
-		Products view =  new Products(store);
 		
-		switch(choice) {
-		case 1: 
-			view.printProductClasses();
-			break;
-		case 2:
-			salesMenu();
-			break;
-		case 3:
-			purchasesMenu();
-			break;
-		case 4:
-			printReport();
-			break;
+		while(true) {
+			utils.clearScreen();
+			printProductsMenu();
+			int choice = utils.inputInt("Please write your choice: ",1,8);
+			Products view =  new Products(store);
+			
+			switch(choice) {
+			case 1: 
+				view.printProductClasses();
+				break;
+			case 2:
+				salesMenu();
+				break;
+			case 3:
+				purchasesMenu();
+				break;
+			case 4:
+				printReport();
+				break;
+			case 8:
+				return;
+			}
 		}
+		
 	}
 	
 	public static void salesMenu() {

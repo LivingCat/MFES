@@ -7,31 +7,65 @@ import Kids2Kids.Date;
 
 public class utils {
 	
-	private static Scanner sc = new Scanner(System.in);
-	
 	public static void clearScreen() {
 		for(int i = 0; i < 20; i++) {
 			System.out.println("");
 		}
 	}
 	
-	public static int userInput(int min, int max) {
+	public static int inputInt(String msg, int min, int max) {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
 		int number;
 		do {
-		    System.out.print("Please write your choice: ");
+		    System.out.print(msg);
 		    while (sc.hasNextLine() && !sc.hasNextInt()) {
 		    	sc.next();
-		        System.out.println("That's not a valid option!");
-		        System.out.println("Please write your choice: ");
+		        System.out.println("That's not a valid input!");
+		        System.out.println(msg);
 		    }
 
 		   	number = sc.nextInt();
 		    
 		    if(number < min || number > max) {
-		    	System.out.println("That's not a valid option!");
+		    	System.out.println("That's not a valid input!");
 		    }
 		} while (number < min || number > max);
 		return number;
+	}
+	
+	public static double inputDouble(String msg, double min, double max) {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		double number;
+		do {
+		    System.out.print(msg);
+		    while (sc.hasNextLine() && !sc.hasNextDouble()) {
+		    	sc.next();
+		        System.out.println("That's not a valid input!");
+		        System.out.println(msg);
+		    }
+
+		   	number = sc.nextDouble();
+		    
+		    if(number < min || number > max) {
+		    	System.out.println("That's not a valid input!");
+		    }
+		} while (number < min || number > max);
+		return number;
+	}
+	
+	public static String inputString(String msg) {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		System.out.print(msg);
+		return sc.nextLine();
+	}
+	
+	public static void pressEnterToContinue() {
+		System.out.println("Press \"ENTER\" to continue...");
+		Scanner sc = new Scanner(System.in);
+		sc.nextLine();
 	}
 	
 	public static void printMenuTitle(String title) {
@@ -59,10 +93,6 @@ public class utils {
 		}
 		
 		System.out.println();
-	}
-	
-	public static void closeScanner() {
-		sc.close();
 	}
 	
 	public static Date today() {

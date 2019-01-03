@@ -27,6 +27,13 @@ public class Products {
 			ProductClass c = (ProductClass) it.next();
 			System.out.println(i + " - " + c);
 		}
+		
+		utils.pressEnterToContinue();
+	}
+	
+	public void printProducts() {
+		utils.clearScreen();
+		utils.printMenuTitle("");
 	}
 
 }

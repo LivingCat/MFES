@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.overture.codegen.runtime.VDMMap;
 import org.overture.codegen.runtime.VDMSet;
 
 import Kids2Kids.Product;
@@ -44,13 +45,13 @@ public class Products {
 		utils.printMenuTitle("Stock");
 		System.out.println();
 		
-		printProducts();
+		printProducts(this.store.getStoreProducts());
 		
 		utils.pressEnterToContinue();
 	}
 	
-	public HashMap<Integer,Object> printProducts() {
-		HashMap<Integer,Object> products = utils.createMap(store.getStoreProducts());
+	public HashMap<Integer,Object> printProducts(VDMMap storeProducts) {
+		HashMap<Integer,Object> products = utils.createMap(storeProducts);
 		
 		for(int i = 1; i <= products.size(); i++) {
 			Map.Entry<Product,Number> productMaplet = (Map.Entry<Product,Number>)products.get(i);
@@ -186,7 +187,7 @@ public class Products {
 			return;
 		}
 		
-		HashMap<Integer,Object> list = printProducts();
+		HashMap<Integer,Object> list = printProducts(this.store.getStoreProducts());
 		
 		int input = utils.inputInt("Choose the product: ", 1, numberOfProducts);
 		
@@ -209,7 +210,7 @@ public class Products {
 			return;
 		}
 		
-		HashMap<Integer,Object> list = printProducts();
+		HashMap<Integer,Object> list = printProducts(this.store.getStoreProducts());
 		
 		int input = utils.inputInt("Choose the product: ", 1, numberOfProducts);
 		Product product = ((Map.Entry<Product, Number>)list.get(input)).getKey();

@@ -80,8 +80,8 @@ public class Sales {
 		for (Iterator<Entry<Product, Number>> iterator = maplets.iterator(); iterator.hasNext();) {
 			Entry<Product, Number> entry = iterator.next();
 			
-			if(entry.getValue().equals(0)) {
-				products.remove(entry.getKey());
+			if(entry.getValue().intValue() == 0) {
+				iterator.remove();
 			}
 		}
 		

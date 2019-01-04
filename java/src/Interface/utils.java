@@ -138,4 +138,8 @@ public class utils {
 		Calendar cal = Calendar.getInstance();
 		return new Date(cal.get(cal.DAY_OF_MONTH),cal.get(cal.MONTH) + 1,cal.get(cal.YEAR));
 	}
+	
+	public static double round(double value, int precision) {
+		return (double)Math.round(value * (double)Math.pow(10, precision)) / (double)Math.pow(10, precision);
+	}
 }

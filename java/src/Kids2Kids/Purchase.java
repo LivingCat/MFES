@@ -1,6 +1,8 @@
 package Kids2Kids;
 
 import java.util.*;
+import java.util.Map.Entry;
+
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -54,14 +56,23 @@ public class Purchase {
   public Purchase() {}
 
   public String toString() {
-
-    return "Purchase{"
-        + "products := "
-        + Utils.toString(products)
-        + ", date := "
-        + Utils.toString(date)
-        + ", grandTotal := "
-        + Utils.toString(grandTotal)
-        + "}";
+	  
+	  String purchase = "Date: " + date.getDate() + "\n" +
+				"Products:\n";
+		
+		Set<Map.Entry<Product, Number>> maplets = products.entrySet();
+		
+		for (Iterator iterator = maplets.iterator(); iterator.hasNext();) {
+			Entry<Product, Number> entry = (Entry<Product, Number>) iterator.next();
+			Product p = entry.getKey();
+			Number q = entry.getValue();
+			
+			purchase += "\t- " + p.getName() + "\n";
+			purchase += "\t  " + p.getBuyPrice() + "€ per unit, " + q + " unit(s)\n";
+		}
+		
+		purchase += "Grand Total = " + grandTotal + "€";
+		
+		return purchase;
   }
 }

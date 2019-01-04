@@ -27,6 +27,6 @@ public class PurchaseFromSupplier extends Purchase {
 
   public String toString() {
 
-    return "PurchaseFromSupplier{" + "supplier := " + Utils.toString(supplier) + "}";
+	  return "Supplier: " + supplier + "\n" + super.toString();
   }
 }

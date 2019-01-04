@@ -147,6 +147,27 @@ public class StoreMenu {
 	
 	public void purchasesMenu() {
 		
+		while(true) {
+			utils.clearScreen();
+			printPurchasesMenu();
+			int choice = utils.inputInt("Please write your choice: ",1,4);
+			Purchases view =  new Purchases(store);
+			
+			switch(choice) {
+			case 1: 
+				view.listPurchases();
+				break;
+			case 2:
+				view.createNewClientPurchase();
+				break;
+			case 3:
+				view.createNewSupplierPurchase();
+				break;
+			case 4:
+				return;
+			}
+		}
+		
 	}
 	
 	public void printReport() {}

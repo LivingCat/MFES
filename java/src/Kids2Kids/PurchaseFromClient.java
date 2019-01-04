@@ -26,7 +26,7 @@ public class PurchaseFromClient extends Purchase {
   public PurchaseFromClient() {}
 
   public String toString() {
-
-    return "PurchaseFromClient{" + "client := " + Utils.toString(client) + "}";
+	  
+	return "Client: " + client + "\n" + super.toString();
   }
 }

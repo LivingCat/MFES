@@ -1,18 +1,20 @@
+class Client
 /*
 	Defines a client of the store
 */
-class Client
 instance variables
   name: seq of (char); 
-  inv len name > 0;
+  inv len name > 0; -- client's name can't be a empty
 
 operations
-	--Creates a client with the received name
+	--Constructor for class Client
+	--n - client's name
+	--Returns a client object
 	public Client: seq of (char) ==> Client
 		Client(n) == (name := n; return self);
 		
 
---Retrieve client's name
+	--Retrieve client's name
 	public getName: () ==> seq of (char)
 		getName() == return name;
 

@@ -1,12 +1,22 @@
 class Product
+/*
+Defines a product
+*/
 instance variables
   productClass: ProductClass;
   name: seq of (char);
   buyPrice: real;
   sellPrice: real;
-  inv buyPrice >= 0 and sellPrice >= 0 and len name > 0; 
+  inv buyPrice >= 0 and sellPrice >= 0 and len name > 0;  -- prices the store sells for and buys for have to be positive
+  																												-- products name can't be empty
   
 operations
+
+	--Constructor for class Product
+	--pClass - product class
+	--n - product name
+	--bPrice - price that the store buys the product for
+	--sellPrice - price that the store sells it for
 	public Product: ProductClass * seq of (char) * real * real ==> Product
 		Product(pClass,n,bPrice,sPrice) == (
 			productClass := pClass;
@@ -16,15 +26,19 @@ operations
 			return self;
 		);
 	
+	-- Retrieve buy price
 	pure public getBuyPrice: () ==> real 
 		getBuyPrice() == return buyPrice;
 		
+	-- Retrieve sell price
 	pure public getSellPrice: () ==> real 
 		getSellPrice() == return sellPrice;
 		
+	-- Retrieve product name
 	pure public getName: () ==> seq of (char)
 		getName() == return name;
 		
+	-- Retrieve product class
 	pure public getClass: () ==> ProductClass
 		getClass() == return productClass;
 

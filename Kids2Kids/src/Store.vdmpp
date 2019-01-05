@@ -1,4 +1,7 @@
 class Store
+/*
+Defines a store
+*/
 instance variables
   sale:set of (Sale);
   purchase:set of (Purchase);
@@ -7,10 +10,13 @@ instance variables
   country:seq of (char);
   classes: set of ProductClass;
   cash : real;
-  inv cash >= 0;
+  inv cash >= 0; --cash that the store has must be higher than or equal to 0€
 
 operations
 
+	--Constructor for class Store
+	--n - name of the store
+	--c - country the story is situated in
 	public Store: seq of (char) * seq of (char) ==> Store
 	Store(n,c) == (
 	 name := n;
@@ -22,7 +28,11 @@ operations
 	 cash := 0;
 	 return self;
 	);
-	 
+	
+	--Constructor for class Store
+	--n - name of the store
+	--c - country the story is situated in
+	--csh - cash the store has initially
 	public Store: seq of (char) * seq of (char) * real ==> Store
 	Store(n,c,csh) == (
 	 name := n;
@@ -35,6 +45,9 @@ operations
 	 return self;
 	);
 	
+	-- Calculates the grand total of the purchase
+	-- productList - map with the products to buy as keys and respective quantities as values
+	-- Returns the grand total of the purchase
 	pure private calculateGrandTotalPurchase: map Product to nat1 ==> real
 		calculateGrandTotalPurchase(productsList) == (
 			dcl sum:real := 0;
@@ -42,6 +55,9 @@ operations
 			return sum;
 		);
 		
+	-- Calculates the grand total of the sale
+	-- productList - map with the products to sell as keys and respective quantities as values
+	-- Returns the grand total of the sale
 	pure private calculateGrandTotalSale: map Product to nat1 ==> real
 		calculateGrandTotalSale(productsList) == (
 			dcl sum:real := 0;
@@ -49,6 +65,10 @@ operations
 			return sum;
 		);
 	 
+	--Registers a purchase made from a Client
+	--products - products that were bought and respective quantities 
+	--client - client that we bought the products from
+	--date - date when the transaction occurred
   public  buy : (map Product to nat1) * Client * Date ==> PurchaseFromClient
   buy(products, client, date) == (
   	dcl newPurchase : Purchase := new PurchaseFromClient(client,products,date);
@@ -62,13 +82,16 @@ operations
   	
   	return narrow_(newPurchase,PurchaseFromClient);
   )
-		pre card dom products > 0 and 
-			forall p in set dom products & p in set dom product and
-			calculateGrandTotalPurchase(products) <= cash
-  	post forall p in set dom products & product(p) = product~(p) + products(p) and
-  		cash = cash~ - calculateGrandTotalPurchase(products);
+		pre card dom products > 0 and -- purchase must have at least one product
+			forall p in set dom products & p in set dom product and -- products must belong to the store
+			calculateGrandTotalPurchase(products) <= cash --store has enough money to buy the products
+  	post forall p in set dom products & product(p) = product~(p) + products(p) and --stock of products bought were updated
+  		cash = cash~ - calculateGrandTotalPurchase(products); --cash was decreased
   	
-
+	--Registers a purchase made from a Supplier
+	--products - products that were bought and respective quantities 
+	--supplier - supplier that we bought the products from
+	--date - date when the transaction occurred
   public  buy : (map Product to nat1) * Supplier * Date ==> PurchaseFromSupplier
   buy(products, supplier, date) == (
   	dcl newPurchase : Purchase := new PurchaseFromSupplier(supplier,products,date);
@@ -82,12 +105,16 @@ operations
   	
   	return narrow_(newPurchase,PurchaseFromSupplier);
   )
-  	pre card dom products > 0 and 
-			forall p in set dom products & p in set dom product and
-			calculateGrandTotalPurchase(products) <= cash
-  	post forall p in set dom products & product(p) = product~(p) + products(p)  and
-  		cash = cash~ - calculateGrandTotalPurchase(products);
+  	pre card dom products > 0 and -- purchase must have at least one product
+			forall p in set dom products & p in set dom product and-- products must belong to the store
+			calculateGrandTotalPurchase(products) <= cash--store has enough money to buy the products
+  	post forall p in set dom products & product(p) = product~(p) + products(p)  and --stock of products bought were updated
+  		cash = cash~ - calculateGrandTotalPurchase(products);--cash was decreased
   	
+ 	--Registers a sale
+	--products - products that were sold and respective quantities 
+	--client - client that bought the products
+	--date - date when the transaction occurred
   public  sell : (map Product to nat1) * Client * Date ==> Sale
   sell(products, client, date) == (
   	dcl newSale : Sale := new Sale(client,products,date);
@@ -101,64 +128,78 @@ operations
   	
   	return newSale;
   )
-    pre card dom products > 0 and  --temos de estar a vender algo
-    	forall p in set dom products & p in set dom product and --produtos que tentamos vender existem na loja
-    	forall p2 in set dom products & products(p2) <= product(p2) -- vendemos stock que temos
-    post forall p in set dom products & product(p) = product~(p) - products(p) and
-    	cash = cash~ + calculateGrandTotalSale(products);
-    
+    pre card dom products > 0 and -- sale must have at least one product
+    	forall p in set dom products & p in set dom product and -- products must belong to the store
+    	forall p2 in set dom products & products(p2) <= product(p2) --store sells products that has in stock in enough quantity
+    post forall p in set dom products & product(p) = product~(p) - products(p) and--stock of products bought were updated
+    	cash = cash~ + calculateGrandTotalSale(products);--cash was increased
  
-  -- add product to the store  
+  --Add product to the store
+  --p - Product
+  --q - product stock
   public addProduct : Product * nat ==> ()
   addProduct(p,q) == (
   	dcl newProduct : map Product to nat := {p |-> q};
   	product := product ++ newProduct;
   )
-  	pre (not exists p2 in set dom product & p.getName() = p2.getName()) and  --produto novo
-  		p.getClass() in set classes --existe a classe do produto
-  	post card dom product = card dom product~ + 1; --temos um produto novo
+  	pre (not exists p2 in set dom product & p.getName() = p2.getName()) and --product doesn't exist in the store
+  		p.getClass() in set classes --product class exists
+  	post card dom product = card dom product~ + 1; --set of products is increased
   	
+  --Remove product from the store
+  --pName - product name
   public removeProduct : seq of (char) ==> ()
   removeProduct(pName) == (
   	dcl productCopy : Product;
   	for all p in set dom product do if(p.getName() = pName) then productCopy := p;
   	product := {productCopy} <-: product;
   )
-  	pre exists1 p in set dom product & pName = p.getName()    --produto tem de existir na loja
-  	post card dom product = card dom product~ - 1; --removemos um produto
+  	pre exists1 p in set dom product & pName = p.getName()-- product exists in the store
+  	post card dom product = card dom product~ - 1; --set of products is decreased
   	
+ 	--Add stock to a product
+ 	--p - product
+ 	--q - quantity
   public addStock : Product * nat1 ==> ()
   addStock(p,q) == (
   	dcl q1 : nat := product(p) + q;
   	dcl newProduct : map Product to nat := {p |-> q1};
   	product := product ++ newProduct;
   )
-  	pre p in set dom product
-  	post product(p) = product~(p) + q;
+  	pre p in set dom product --product has to exist in the store
+  	post product(p) = product~(p) + q; --product quantity is updated
   	
+  --Add product class
+  --pc - product class
   public addProductClass: ProductClass ==> ()
   addProductClass(pc) == classes := classes union {pc}
-  	pre not exists pc2 in set classes & pc2.getName() = pc.getName() --classe nova 
-  	post card classes = card classes~ + 1;
+  	pre not exists pc2 in set classes & pc2.getName() = pc.getName() --product class doesn't already exist in the store
+  	post card classes = card classes~ + 1;--set of products classes is increased
   	
+  --Remove product class
+  --pcName - product class name
  	public removeProductClass: seq of (char) ==> ()
  	removeProductClass(pcName) == (
   	dcl pcCpy : ProductClass;
   	dcl productsToDelete : set of Product := {};
   	
+  	--remove product class from set of product classes
   	for all pc in set classes do if(pc.getName() = pcName) then pcCpy := pc;
   	classes := classes \ {pcCpy};
   	
+  	--remove products with the removed product class
   	for all p in set dom product do if(p.getClass().getName() = pcName) then productsToDelete := productsToDelete union {p};
   	product := productsToDelete <-: product;
   )
- 		pre exists pc2 in set classes & (pc2.getName() = pcName)
- 		post card classes = card classes~ - 1 
- 		and not exists p in set dom product & p.getClass().getName() = pcName;
+ 		pre exists pc2 in set classes & (pc2.getName() = pcName)-- product class exists in the store
+ 		post card classes = card classes~ - 1  --set of products classes in decreased
+ 		and not exists p in set dom product & p.getClass().getName() = pcName; --products with the removed product class were also removed from product list
  			
+ 	--Retrieve number of purchases
  	public getNumberOfPurchases : () ==> nat
  	getNumberOfPurchases() == return card purchase;
  	
+ 	--Retrieve number of purchases made to clients
  	public getNumberOfClientPurchases : () ==> nat
  	getNumberOfClientPurchases() == (
  	  dcl n : nat := 0;
@@ -167,6 +208,7 @@ operations
  		return n;
  	);
  	
+ 	--Retrieve number of purchases made to suppliers
  	public getNumberOfSupplierPurchases : () ==> nat
  	getNumberOfSupplierPurchases() == (
  	  dcl n : nat := 0;
@@ -175,36 +217,48 @@ operations
  		return n;
  	);
  	
+ 	--Retrieve number of sales
  	public getNumberOfSales : () ==> nat
  	getNumberOfSales() == return card sale;
  	
+ 	--Retrieve number of product classes
  	public getNumberOfProductClasses : () ==> nat
  	getNumberOfProductClasses() == return card classes;
  	
+ 	--Retrieve number of products
  	public getNumberOfProducts : () ==> nat
  	getNumberOfProducts() == return card dom product;
  	
+ 	--Retrieve store products
  	public getStoreProducts : () ==> map Product to nat
  	getStoreProducts() == return product;
  	
+ 	--Retrieve store cash
  	public getCash : () ==> real
  	getCash() == return cash;
  	
+ 	--Retrieve store sales
  	public getSales: () ==> set of (Sale)
  	getSales() == return sale;
  	
+ 	--Retrieve store purchases
  	public getPurchases: () ==> set of (Purchase)
  	getPurchases() == return purchase;
  	
+ 	--Retrieve store name
  	public getName: () ==> seq of (char)
  	getName() == return name;
  	
+ 	--Retrieve store country
  	public getCountry: () ==> seq of (char)
  	getCountry() == return country;
  	
+ 	--Retrieve store's product classes
  	public getProductClasses: () ==> set of(ProductClass)
  	getProductClasses() == return classes;
   
+  --Calculates store assets
+  --product quantity * product sell price
   public getAssets: () ==> real 
  	getAssets() == (
  		dcl assets : real := 0;
@@ -212,6 +266,8 @@ operations
  		return assets;
  	);
  	
+ 	--Calculates store net sales
+ 	--sum of the total of all sales
  	public getNetSales: () ==> real
  	getNetSales() == (
  		dcl netSales : real := 0;
@@ -219,6 +275,8 @@ operations
  		return netSales;
  	);
  	
+ 	--Calculates store costs of goods sold
+ 	-- for all the products sold it calculates the quantity sold * the price for which the store bought the product for
  	public getCostOfGoodsSold: () ==> real 
  	getCostOfGoodsSold() == (
  		dcl costOfGoods : real := 0;
@@ -228,9 +286,21 @@ operations
  		return costOfGoods;
  	);
  	
+ 	--Calculates store gross profit
+ 	--store's net sales - store's cost of good sold
  	public getGrossProfit: () ==> real
  	getGrossProfit() == return getNetSales() - getCostOfGoodsSold();
  	
+ 	--Generates a report containing different metrics such as:
+ 	-- store name 
+ 	-- store location
+ 	-- store cash
+ 	-- number of sales
+ 	-- number of purchases (client and supplier)
+ 	-- assets
+ 	-- net sales
+ 	-- cost of goods sold
+ 	-- gross profit
  	 public generateReport : ()  ==> seq of (char)
    generateReport() ==
    	 -- since this function is only prints, we will do it in the java interface

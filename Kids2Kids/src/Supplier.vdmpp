@@ -1,12 +1,19 @@
 class Supplier
+/*
+	Defines a supplier of the store
+*/
 instance variables
   name:seq of (char);
 	inv len name > 0;
 
 operations
+	--Constructor for class Supplier
+	--n - supplier's name
+	--Returns a supplier object
 	public Supplier: seq of (char) ==> Supplier
 		Supplier(n) == (name := n; return self);
-		
+	
+	--Retrieve supplier's name
 	public getName: () ==> seq of (char)
 		getName() == return name;
 		

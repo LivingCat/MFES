@@ -1,4 +1,7 @@
 class Sale
+/*
+ Define a sale
+*/
 instance variables
   client: Client;
   products: map Product to nat1;
@@ -6,6 +9,8 @@ instance variables
   grandTotal: real;
   
 operations
+
+  -- Calculates the total of the sale (sell price * quantity)
 	private calculateGrandTotal: () ==> real
 		calculateGrandTotal() == (
 			dcl sum:real := 0;
@@ -13,6 +18,10 @@ operations
 			return sum;
 		);
 		
+  --Constructor for class Sale
+  --c - client that purchased the products
+  --ps - products and respective quantities that were bought
+  --d - date in which the transaction occurred
 	public Sale: Client * map Product to nat1 * Date ==> Sale
 		Sale(c,ps,d) == (
 			client := c;
@@ -21,18 +30,22 @@ operations
 			grandTotal := calculateGrandTotal();
 			return self;
 		)
-		pre card dom ps <> 0
-		post grandTotal > 0;
+		pre card dom ps <> 0 --sale needs at least one product
+		post grandTotal > 0; --total costs of the sale are higher than 0€
 		
+	-- Retrieve Client that purchased the products
 	public getClient: () ==> Client
 	getClient() == return client;
 	
+	--Retrieve Products sold
 	public getProducts: () ==> map Product to nat1
 	getProducts() == return products;
 	
+	--Retrieve transaction date
 	public getDate: () ==> Date
 	getDate() == return date;
 	
+	--Retrieve sale total
 	public getGrandTotal: () ==> real
 	getGrandTotal() == return grandTotal;
 

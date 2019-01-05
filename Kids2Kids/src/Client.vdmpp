@@ -4,7 +4,7 @@ class Client
 */
 instance variables
   name: seq of (char); 
-  inv len name > 0; -- client's name can't be a empty
+  inv len name > 0; -- client's name can't be empty
 
 operations
 	--Constructor for class Client

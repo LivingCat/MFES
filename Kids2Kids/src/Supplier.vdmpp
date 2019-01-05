@@ -4,7 +4,7 @@ class Supplier
 */
 instance variables
   name:seq of (char);
-	inv len name > 0;
+	inv len name > 0; --supplier's name can't be empty
 
 operations
 	--Constructor for class Supplier

@@ -171,8 +171,18 @@ public class StoreMenu {
 	}
 	
 	public void printReport() {
-		// store name
-		// store location
+		
+		utils.clearScreen();
+		utils.printMenuTitle("Store Report");
+		System.out.println();
+		
+		System.out.println("Store name: " + this.store.getName());
+		System.out.println("Store location: " + this.store.getCountry());
+		System.out.println();
+		
+		System.out.println("Cash available: " + this.store.getCash());
+		System.out.println("Number of sales: " + this.store.getNumberOfSales());
+		System.out.println("");
 		
 		// store cash 
 		// purchases

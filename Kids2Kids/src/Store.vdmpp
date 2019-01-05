@@ -159,6 +159,22 @@ operations
  	public getNumberOfPurchases : () ==> nat
  	getNumberOfPurchases() == return card purchase;
  	
+ 	public getNumberOfClientPurchases : () ==> nat
+ 	getNumberOfClientPurchases() == (
+ 	  dcl n : nat := 0;
+ 		for all p in set purchase do 
+ 			if isofclass(PurchaseFromClient,p) then n := n + 1;
+ 		return n;
+ 	);
+ 	
+ 	public getNumberOfSupplierPurchases : () ==> nat
+ 	getNumberOfSupplierPurchases() == (
+ 	  dcl n : nat := 0;
+ 		for all p in set purchase do 
+ 			if isofclass(PurchaseFromSupplier,p) then n := n + 1;
+ 		return n;
+ 	);
+ 	
  	public getNumberOfSales : () ==> nat
  	getNumberOfSales() == return card sale;
  	
@@ -188,9 +204,36 @@ operations
  	
  	public getProductClasses: () ==> set of(ProductClass)
  	getProductClasses() == return classes;
-
-  public  generateReport : ()  ==> seq of (char)
-  generateReport() ==
-    is not yet specified;
+  
+  public getAssets: () ==> real 
+ 	getAssets() == (
+ 		dcl assets : real := 0;
+ 		for all p in set dom product do assets := assets + p.getSellPrice() * product(p); 
+ 		return assets;
+ 	);
+ 	
+ 	public getNetSales: () ==> real
+ 	getNetSales() == (
+ 		dcl netSales : real := 0;
+ 		for all s in set sale do netSales := netSales + s.getGrandTotal();
+ 		return netSales;
+ 	);
+ 	
+ 	public getCostOfGoodsSold: () ==> real 
+ 	getCostOfGoodsSold() == (
+ 		dcl costOfGoods : real := 0;
+ 		for all s in set sale do (
+ 			for all p in set dom s.getProducts() do costOfGoods := costOfGoods + p.getBuyPrice() * s.getProducts()(p);
+ 		);
+ 		return costOfGoods;
+ 	);
+ 	
+ 	public getGrossProfit: () ==> real
+ 	getGrossProfit() == return getNetSales() - getCostOfGoodsSold();
+ 	
+ 	 public generateReport : ()  ==> seq of (char)
+   generateReport() ==
+   	 -- since this function is only prints, we will do it in the java interface
+     is not yet specified;
 
 end Store

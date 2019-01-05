@@ -170,5 +170,18 @@ public class StoreMenu {
 		
 	}
 	
-	public void printReport() {}
+	public void printReport() {
+		// store name
+		// store location
+		
+		// store cash 
+		// purchases
+		// client purchases
+		// supplier purchases
+		// sales
+		// assets (qtt produto * buying price)
+		// net sales
+		// cost of goods sold
+		// gross profit on sales
+	}
 }

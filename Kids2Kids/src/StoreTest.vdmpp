@@ -214,7 +214,7 @@ operations
 		assertEqual(store.getCash(),cash - 0.5);
 	);
 	
-private testSell: () ==> ()
+	private testSell: () ==> ()
 	testSell() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
 		dcl pc1 : ProductClass := new ProductClass("toy");
@@ -252,6 +252,40 @@ private testSell: () ==> ()
 		--check if cash increased
 		assertEqual(store.getCash(),cash + 0.4);
 	);
+	
+	private testReportMetrics: () ==> ()
+	testReportMetrics() == (
+		dcl store : Store := new Store("Kids2Kids","PT",1000);
+		dcl pc1 : ProductClass := new ProductClass("toy");
+		dcl p1 : Product := new Product(pc1,"doll",10,15);
+		dcl p2 : Product := new Product(pc1,"car",15,20);
+		dcl sold : map Product to nat1 := {p1|->2, p2 |-> 1};
+		dcl bought : map Product to nat1 := {p1 |-> 3, p2 |-> 2};
+		dcl client : Client := new Client("joao");
+		dcl supplier : Supplier := new Supplier("catarina");
+		dcl date : Date := new Date(30,12,2018);
+		dcl sale: Sale;
+		dcl purchase: Purchase;
+		
+		store.addProductClass(pc1);
+		store.addProduct(p1,10);
+		store.addProduct(p2,10);
+		
+		assertEqual(store.getAssets(),350);
+		
+		sale := store.sell(sold,client,date);
+		purchase := store.buy(bought,supplier,date);
+		purchase := store.buy(bought,client,date);
+		
+		assertEqual(store.getNumberOfSales(), 1);
+		assertEqual(store.getNumberOfPurchases(), 2);
+		assertEqual(store.getNumberOfClientPurchases(), 1);
+		assertEqual(store.getNumberOfSupplierPurchases(), 1);
+		
+		assertEqual(store.getNetSales(), 50);
+		assertEqual(store.getCostOfGoodsSold(), 35);
+		assertEqual(store.getGrossProfit(), 15); 
+	);
 
 	public static main: () ==> ()
 	main() == (
@@ -267,6 +301,7 @@ private testSell: () ==> ()
 		testSuite.testBuyFromClient();
 		testSuite.testBuyFromSupplier();
 		testSuite.testSell();
+		testSuite.testReportMetrics();
 	);
 	
 	

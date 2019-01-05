@@ -171,17 +171,15 @@ public class StoreMenu {
 	}
 	
 	public void printReport() {
-		// store name
-		// store location
 		
-		// store cash 
-		// purchases
-		// client purchases
-		// supplier purchases
-		// sales
-		// assets (qtt produto * buying price)
-		// net sales
-		// cost of goods sold
-		// gross profit on sales
+		utils.clearScreen();
+		utils.printMenuTitle("Store Report");
+		System.out.println("Report done on the " + utils.today().getDate());
+		System.out.println();
+		
+		System.out.println(this.store);
+		
+		System.out.println();
+		utils.pressEnterToContinue();
 	}
 }

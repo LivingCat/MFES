@@ -47,7 +47,7 @@ public class MainMenu {
 	}
 	
 	public static void demoStore() {
-		Store store = new Store("Kids2Kids","PT",1000);
+		Store store = new Store("Kids2Kids","Matosinhos",1000);
 		store.seed();
 		StoreMenu menu = new StoreMenu(store);
 		menu.mainMenu();

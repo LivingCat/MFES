@@ -1,11 +1,22 @@
 class Date
+
+/*
+	Defines the type date used to store the transaction date.
+*/
+
 instance variables
   day:nat1;
   month:nat1;
   year:nat1;
-  inv month <= 12 and day <= daysOfMonth(month, year)
+  inv month <= 12 and day <= daysOfMonth(month, year) -- a month cannot be bigger than 12 and a day cannot
+  																										-- be bigger than the maximum number of days 
+  																										-- in that month
   
 operations
+	-- Calculates the maximum number of days in a month
+	-- m - month
+	-- y - year
+	-- Returns number of days
 	pure private daysOfMonth: nat1 * nat1 ==> nat1
 		daysOfMonth(m, y) == (
 			if (m = 4 or m = 6 or m = 9 or m = 11) then return 30
@@ -16,7 +27,10 @@ operations
 			) 
 			else return 31
 		);
-		
+	
+	-- Converts a nat digit to a char
+	-- n - digit to convert
+	-- Returns char with digit
 	private digitToChar: nat ==> char
 	digitToChar(n) == (
 		cases n:
@@ -32,8 +46,11 @@ operations
 			others -> return '9'
 		end;
 	)
-	pre n < 10;
+	pre n < 10; -- Number needs to be less than 10 to be a digit
 	
+	-- Converts a nat number to a seq of char (string)
+	-- n - number to convert
+	-- Returns string with number
 	private natToString: nat ==> seq of (char)
 	natToString(n) == (
 		dcl string : seq of (char) := [];
@@ -48,6 +65,7 @@ operations
 		return string;
 	); 
 	
+	-- Converts a object of class date to a string with the following type dd/mm/yyyy
 	public getDate: () ==> seq of (char)
 	getDate() == (
 		dcl d : seq of (char) := [];
@@ -58,6 +76,11 @@ operations
 		return d ^ natToString(day) ^ ['/'] ^ m ^ natToString(month) ^ ['/'] ^ natToString(year);
 	);
 
+	-- Constructor for class date
+	-- d - day
+	-- m - month
+	-- y - year
+	-- Returns a date object
 	public Date: nat1 * nat1 * nat1 ==> Date
 		Date(d,m,y) == (atomic(day := d; month := m; year := y;); return self;)
 	

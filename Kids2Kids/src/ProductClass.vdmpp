@@ -1,12 +1,20 @@
 class ProductClass
+/*
+	Defines a product class.
+*/
+
 instance variables
   name : seq of (char);
-  inv len name > 0;
+  inv len name > 0; -- a name for a product class can't be empty
   
 operations
+	-- Constructor for class ProductClass
+	-- n - name
+	-- Returns a ProductClass object
 	public ProductClass: seq of (char) ==> ProductClass
 		ProductClass(n) == (name := n; return self;);
-		
+	
+	-- Retrieves the ProductClass name	
 	pure public getName: () ==> seq of (char)
 		getName() == return name;
 

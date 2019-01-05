@@ -1,17 +1,27 @@
 class Purchase
+/*
+	Defines a general purchase.
+*/
+
 instance variables
   protected products: map Product to nat1;
   protected date: Date;
   protected grandTotal: real;
   
 operations
+	-- Calculates the grand total of the purchase
+	-- Returns the grand total of the purchase
 	protected calculateGrandTotal: () ==> real
 		calculateGrandTotal() == (
 			dcl sum:real := 0;
 			for all p in set dom products do sum := sum + p.getBuyPrice() * products(p);
 			return sum;
 		);
-		
+	
+	-- Constructor for class Purchase
+	-- ps - map with the products to buy as keys and respective quantities as values
+	-- d - date of the transaction
+	-- Returns a Purchase object
 	protected Purchase: map Product to nat1 * Date ==> Purchase
 		Purchase(ps,d) == (
 			products := ps;
@@ -19,15 +29,18 @@ operations
 			grandTotal := calculateGrandTotal();
 			return self;
 		)
-			pre card dom ps > 0
-			post grandTotal > 0;
+			pre card dom ps > 0 -- a purchase needs at least one product
+			post grandTotal > 0; -- grandTotal needs to be bigger than 0
 	
+	-- Retrieves the products of the purchase
 	public getProducts: () ==> map Product to nat1
 	getProducts() == return products;
 	
+	-- Retrieves the date of the purchase
 	public getDate: () ==> Date
 	getDate() == return date;
 	
+	-- Retrieves the grand total of the purchase
 	public getGrandTotal: () ==> real
 	getGrandTotal() == return grandTotal;
 

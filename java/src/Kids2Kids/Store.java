@@ -294,11 +294,20 @@ public class Store {
 	}
 
 	public String toString() {
+		
+		String store = "Store name: " + name + "\n"
+				+ "Store location: " + country + "\n\n"
+				+ "Cash available: " + cash + "€\n"
+				+ "Number of sales: " + getNumberOfSales() + "\n"
+				+ "Number of purchases: " + getNumberOfPurchases() + "\n"
+				+ "\tNumber of client purchases: " + getNumberOfClientPurchases() + "\n"
+				+ "\tNumber of supplier purchases: " + getNumberOfSupplierPurchases() + "\n"
+				+ "Assets: " + utils.round(getAssets().doubleValue(), 2) + "€\n"
+				+ "Net sales: " + utils.round(getNetSales().doubleValue(), 2) + "€\n"
+				+ "Cost of goods sold: " + utils.round(getCostOfGoodsSold().doubleValue(),2) + "€\n"
+				+ "Gross profit on sales: " + utils.round(getGrossProfit().doubleValue(),2) + "€";
 
-		return "Store{" + "sale := " + Utils.toString(sale) + ", purchase := " + Utils.toString(purchase)
-				+ ", product := " + Utils.toString(product) + ", name := " + Utils.toString(name) + ", country := "
-				+ Utils.toString(country) + ", classes := " + Utils.toString(classes) + ", cash := "
-				+ Utils.toString(cash) + "}";
+		return store;
 	}
 
 	public void seed() {

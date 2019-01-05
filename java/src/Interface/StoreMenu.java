@@ -174,24 +174,12 @@ public class StoreMenu {
 		
 		utils.clearScreen();
 		utils.printMenuTitle("Store Report");
+		System.out.println("Report done on the " + utils.today().getDate());
 		System.out.println();
 		
-		System.out.println("Store name: " + this.store.getName());
-		System.out.println("Store location: " + this.store.getCountry());
+		System.out.println(this.store);
+		
 		System.out.println();
-		
-		System.out.println("Cash available: " + this.store.getCash());
-		System.out.println("Number of sales: " + this.store.getNumberOfSales());
-		System.out.println("");
-		
-		// store cash 
-		// purchases
-		// client purchases
-		// supplier purchases
-		// sales
-		// assets (qtt produto * buying price)
-		// net sales
-		// cost of goods sold
-		// gross profit on sales
+		utils.pressEnterToContinue();
 	}
 }

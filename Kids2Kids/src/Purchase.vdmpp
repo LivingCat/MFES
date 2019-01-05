@@ -30,7 +30,7 @@ operations
 			return self;
 		)
 			pre card dom ps > 0 -- a purchase needs at least one product
-			post grandTotal > 0; -- grandTotal needs to be bigger than 0
+			post grandTotal > 0; -- grandTotal needs to be greater than 0
 	
 	-- Retrieves the products of the purchase
 	public getProducts: () ==> map Product to nat1

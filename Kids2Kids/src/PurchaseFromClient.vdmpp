@@ -1,14 +1,23 @@
 class PurchaseFromClient is subclass of Purchase
+/*
+	Defines a purchase made from a client
+*/
 instance variables
   client: Client;
 
 operations
+	-- Constructor for class PurchaseFromClient
+	-- c - client that we made the purchase from
+	-- ps - map with the products to buy as keys and respective quantities as values
+	-- d - date of the transaction
+	-- Returns a PurchaseFromClient object
 	public PurchaseFromClient: Client * map Product to nat1 * Date ==> PurchaseFromClient
 	PurchaseFromClient(c, ps,d) == (
 		client := c;
 		Purchase(ps,d);
 	);
 	
+	-- Retrieves the client of the purchase
 	public getClient: () ==> Client
 	getClient() == return client; 
 

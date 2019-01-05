@@ -1,14 +1,23 @@
 class PurchaseFromSupplier is subclass of Purchase
+/*
+	Defines a purchase made from a supplier
+*/
 instance variables
   supplier:Supplier;
   
 operations
+	-- Constructor for class PurchaseFromSupplier
+	-- s - supplier that we made the purchase from
+	-- ps - map with the products to buy as keys and respective quantities as values
+	-- d - date of the transaction
+	-- Returns a PurchaseFromSupplier object
 	public PurchaseFromSupplier: Supplier * map Product to nat1 * Date ==> PurchaseFromSupplier
 	PurchaseFromSupplier(s, ps,d) == (
 		supplier := s;
 		Purchase(ps,d);
 	);
 	
+	-- Retrieves the supplier of the purchase
 	public getSupplier: () ==> Supplier
 	getSupplier() == return supplier;
 

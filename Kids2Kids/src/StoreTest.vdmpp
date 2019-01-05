@@ -1,16 +1,19 @@
 class StoreTest
+/*
+	Contains the test cases for the store.
+*/
 operations
+	-- Simulates assertion checking by reducing it to pre-condition checking.
 	private assertTrue: bool ==> ()
 	assertTrue(cond) == return
 		pre cond;
 		
-		-- Simulates assertion checking by reducing it to post-condition checking.
-	-- If values are not equal, prints a message in the console and generates 
-	-- a post-conditions violation.
+	-- Simulates assertion checking by reducing it to post-condition checking.
 	private assertEqual: ? * ? ==> ()
 	assertEqual(expected, actual) == return
 		post expected = actual;
-		
+	
+	-- Tests the type usage of the type date.
 	private testDate: () ==> () 
 	testDate() == (
 		dcl date : Date;
@@ -25,6 +28,7 @@ operations
 		assertEqual(date.getDate(),"08/03/2019");
 	);
 	
+	-- Tests the creation of a store without initial cash
 	private testCreateStore: () ==> ()
 	testCreateStore() == (
 		dcl store : Store := new Store("Kids2Kids","UK");
@@ -32,7 +36,8 @@ operations
 		assertEqual(store.getCountry(),"UK");
 		assertEqual(store.getCash(),0);
 	);
-		
+	
+	-- Tests the registry of a new product class, as specified in R7
 	private testAddProductClass: () ==> ()
 	testAddProductClass() == (
 		dcl store : Store := new Store("Kids2Kids","UK",1000);
@@ -47,6 +52,7 @@ operations
 		assertTrue(exists1 pc in set store.getProductClasses() & pc.getName() = "toy");
 	);
 	
+	-- Tests the removal of a product class, as specified in R8
 	private testRemoveProductClass: () ==> ()
 	testRemoveProductClass() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -72,6 +78,7 @@ operations
 		assertTrue(not exists p in set dom store.getStoreProducts() & p.getClass().getName() = "food");
 	);
 	
+	-- Tests the registry of a new product, as specified in R4
 	private testAddProduct: () ==> ()
 	testAddProduct() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -91,6 +98,7 @@ operations
 		
 	);
 	
+	-- Tests the removal of a product, as specified in R5
 	private testRemoveProduct: () ==> ()
 	testRemoveProduct() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -114,6 +122,7 @@ operations
 
 	);
 	
+	-- Test the addition of stock to a product, as specified in R6
 	private testAddStock: () ==> ()
 	testAddStock() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -137,7 +146,7 @@ operations
 		for all p in set dom products do if (p.getName() = p2.getName()) then assertEqual(3,products(p)); 
 	);
 	
-
+	-- Test the registry of a new purchase from a Client, as specified in R2
 	private testBuyFromClient: () ==> ()
 	testBuyFromClient() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -173,6 +182,7 @@ operations
 		assertEqual(store.getCash(),cash - 0.8);
 	);
 	
+	-- Test the registry of a new purchase from a Supplier, as specified in R3
 	private testBuyFromSupplier: () ==> ()
 	testBuyFromSupplier() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -214,6 +224,7 @@ operations
 		assertEqual(store.getCash(),cash - 0.5);
 	);
 	
+	-- Test the registry of a new sale from a Client, as specified in R1
 	private testSell: () ==> ()
 	testSell() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -253,6 +264,7 @@ operations
 		assertEqual(store.getCash(),cash + 0.4);
 	);
 	
+	-- Test the report functionality, as specified in R9
 	private testReportMetrics: () ==> ()
 	testReportMetrics() == (
 		dcl store : Store := new Store("Kids2Kids","PT",1000);
@@ -287,6 +299,7 @@ operations
 		assertEqual(store.getGrossProfit(), 15); 
 	);
 
+	-- Function that executes all the test suites
 	public static main: () ==> ()
 	main() == (
 		dcl testSuite : StoreTest := new StoreTest();
@@ -306,8 +319,6 @@ operations
 	
 	
 	--------------------------Invalid tests -----------------------------
-		
-	--experimentar comprar quantidade negativa de produtos just to see what happens 
 	
 	-- try to buy a product that doesn't yet exist in the store
 	public testBuyProductNonExistent: () ==> ()

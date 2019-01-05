@@ -1,3 +1,6 @@
+/*
+Defines a product
+*/
 class Product
 instance variables
   productClass: ProductClass;
@@ -7,6 +10,9 @@ instance variables
   inv buyPrice >= 0 and sellPrice >= 0 and len name > 0; 
   
 operations
+
+	--Creates a product with the received productClass, name, price that the store buys the product for and
+	-- price that the store sells it for
 	public Product: ProductClass * seq of (char) * real * real ==> Product
 		Product(pClass,n,bPrice,sPrice) == (
 			productClass := pClass;
@@ -16,6 +22,7 @@ operations
 			return self;
 		);
 	
+	--
 	pure public getBuyPrice: () ==> real 
 		getBuyPrice() == return buyPrice;
 		

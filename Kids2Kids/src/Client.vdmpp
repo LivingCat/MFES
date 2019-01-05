@@ -7,12 +7,14 @@ instance variables
   inv len name > 0;
 
 operations
-	--Creates a client with the received name
+	--Constructor for class Client
+	--n - client's name
+	--Returns a client object
 	public Client: seq of (char) ==> Client
 		Client(n) == (name := n; return self);
 		
 
---Retrieve client's name
+	--Retrieve client's name
 	public getName: () ==> seq of (char)
 		getName() == return name;
 

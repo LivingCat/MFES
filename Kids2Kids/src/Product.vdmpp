@@ -7,7 +7,8 @@ instance variables
   name: seq of (char);
   buyPrice: real;
   sellPrice: real;
-  inv buyPrice >= 0 and sellPrice >= 0 and len name > 0; 
+  inv buyPrice >= 0 and sellPrice >= 0 and len name > 0;  -- prices the store sells for and buys for have to be positive
+  																												-- products name can't be empty
   
 operations
 
